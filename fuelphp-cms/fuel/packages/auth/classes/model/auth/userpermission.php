@@ -6,7 +6,7 @@
  * @version    1.7
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2013 Fuel Development Team
+ * @copyright  2010 - 2014 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -18,6 +18,11 @@ class Auth_Userpermission extends \Orm\Model
 	 * @var  string  connection to use
 	 */
 	protected static $_connection = null;
+	
+	/**
+	 * @var  string  write connection to use
+	 */
+    protected static $_write_connection = null;
 
 	/**
 	 * @var  string  table name to overwrite assumption
@@ -27,12 +32,13 @@ class Auth_Userpermission extends \Orm\Model
 	/**
 	 * @var  array  name or names of the primary keys
 	 */
-	protected static $_primary_key = array('user_id', 'perms_id');
+	protected static $_primary_key = array('id');
 
 	/**
 	 * @var array	model properties
 	 */
 	protected static $_properties = array(
+		'id',
 		'user_id',
 		'perms_id',
 		'actions'         => array(
@@ -78,6 +84,9 @@ class Auth_Userpermission extends \Orm\Model
 
 		// set the connection this model should use
 		static::$_connection = \Config::get('ormauth.db_connection');
+		
+		// set the write connection this model should use
+		static::$_connection = \Config::get('ormauth.db_write_connection');
 
 		// set the models table name
 		static::$_table_name = \Config::get('ormauth.table_name', 'users').'_user_permissions';

@@ -8,7 +8,7 @@
  * @version    1.7
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2013 Fuel Development Team
+ * @copyright  2010 - 2014 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -152,5 +152,15 @@ abstract class Relation
 		}
 
 		return $this->{$property};
+	}
+
+	/**
+	 * Returns true if this relation is a singular relation. Eg, has_one not has_many
+	 *
+	 * @return bool
+	 */
+	public function is_singular()
+	{
+		return $this->singular;
 	}
 }

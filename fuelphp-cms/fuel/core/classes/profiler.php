@@ -55,6 +55,7 @@ class Profiler
 				'sql' => \Security::htmlentities($sql),
 				'time' => static::$profiler->getMicroTime(),
 				'stacktrace' => $stacktrace,
+				'dbname' => $dbname,
 			);
 			return true;
 		}
@@ -65,7 +66,7 @@ class Profiler
 		if (static::$profiler)
 		{
 			static::$query['time'] = (static::$profiler->getMicroTime() - static::$query['time']) *1000;
-			array_push(static::$profiler->queries, static::$query);
+			static::$profiler->queries[] = static::$query;
 			static::$profiler->queryCount++;
 		}
 	}

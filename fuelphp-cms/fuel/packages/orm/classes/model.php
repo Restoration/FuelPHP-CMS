@@ -8,7 +8,7 @@
  * @version    1.7
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2013 Fuel Development Team
+ * @copyright  2010 - 2014 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -24,7 +24,7 @@ class RecordNotFound extends \OutOfBoundsException {}
  */
 class FrozenObject extends \RuntimeException {}
 
-class Model implements \ArrayAccess, \Iterator
+class Model implements \ArrayAccess, \Iterator, \Sanitization
 {
 	/* ---------------------------------------------------------------------------
 	 * Static usage
@@ -494,12 +494,10 @@ class Model implements \ArrayAccess, \Iterator
 	 *
 	 * @return	void
 	 */
-	public static function register_observer($name, $options = null)
+	public static function register_observer($name, $options = array())
 	{
 		$class = get_called_class();
-		$new_observer = is_null($options) ? array($name) : array($name => $options);
-
-		static::$_observers_cached[$class] = static::observers() + $new_observer;
+		static::$_observers_cached[$class] = static::observers() + array($name => $options);
 	}
 
 	/**
@@ -736,6 +734,11 @@ class Model implements \ArrayAccess, \Iterator
 	protected $_frozen = false;
 
 	/**
+	 * @var  bool  $_sanitization_enabled  If this is a records data will be sanitized on get
+	 */
+	protected $_sanitization_enabled = false;
+
+	/**
 	 * @var  array  keeps the current state of the object
 	 */
 	protected $_data = array();
@@ -766,6 +769,11 @@ class Model implements \ArrayAccess, \Iterator
 	protected $_reset_relations = array();
 
 	/**
+	 * @var  array  disabled observer events
+	 */
+	protected $_disabled_events = array();
+
+	/**
 	 * @var  string  view name when used
 	 */
 	protected $_view;
@@ -780,48 +788,64 @@ class Model implements \ArrayAccess, \Iterator
 	{
 		// This is to deal with PHP's native hydration that happens before constructor is called
 		// for some weird reason, for example using the DB's as_object() function
-		if( ! empty($this->_data))
+		if( ! empty($this->_data) or  ! empty($this->_custom_data))
 		{
-			$this->_original = $this->_data;
+			// merge the injected data with the passed data
+			$data = array_merge($this->_custom_data, $this->_data, $data);
+
+			// and reset them
+			$this->_data = array();
+			$this->_custom_data = array();
+
+			// and mark it as existing data
 			$new = false;
 		}
 
-		if ($new)
+		// move the passed data to the correct container
+		$properties = $this->properties();
+		foreach ($properties as $prop => $settings)
 		{
-			$properties = $this->properties();
-			foreach ($properties as $prop => $settings)
+			// do we have data for this this model property?
+			if (array_key_exists($prop, $data))
 			{
-				if (array_key_exists($prop, $data))
-				{
-					$this->_data[$prop] = $data[$prop];
-					unset($data[$prop]);
-				}
-				elseif (array_key_exists('default', $settings))
-				{
-					$this->_data[$prop] = $settings['default'];
-				}
+				// store it in the data container
+				$this->_data[$prop] = $data[$prop];
+				unset($data[$prop]);
 			}
-			$this->_custom_data = $data;
-		}
-		else
-		{
-			$this->_update_original($data);
-			$this->_data = array_merge($this->_data, $data);
 
-			if ($view and array_key_exists($view, $this->views()))
+			// property not present, do we have a default value?
+			elseif ($new and array_key_exists('default', $settings))
 			{
-				$this->_view = $view;
+				$this->_data[$prop] = $settings['default'];
 			}
+		}
+
+		// store the remainder in the custom data store
+		$this->_custom_data = $data;
+
+		// store the view, if one was passed
+		if ($view and array_key_exists($view, $this->views()))
+		{
+			$this->_view = $view;
 		}
 
 		if ($new === false)
 		{
-			$cache and static::$_cached_objects[get_class($this)][static::implode_pk($data)] = $this;
+			// update the original datastore and the related datastore
+			$this->_update_original($this->_data);
+
+			// update the object cache if needed
+			$cache and static::$_cached_objects[get_class($this)][static::implode_pk($this->_data)] = $this;
+
+			// mark the object as existing
 			$this->_is_new = false;
+
+			// and fire the after-load observers
 			$this->observe('after_load');
 		}
 		else
 		{
+			// new object, fire the after-create observers
 			$this->observe('after_create');
 		}
 	}
@@ -869,12 +893,19 @@ class Model implements \ArrayAccess, \Iterator
 				$this->_original_relations[$rel] = array();
 				foreach ($data as $obj)
 				{
-					$this->_original_relations[$rel][] = $obj ? $obj->implode_pk($obj) : null;
+					if ($obj and ! $obj->is_new())
+					{
+						$this->_original_relations[$rel][] = $obj->implode_pk($obj);
+					}
 				}
 			}
 			else
 			{
-				$this->_original_relations[$rel] = $data ? $data->implode_pk($data) : null;
+				$this->_original_relations[$rel] = null;
+				if ($data and ! $data->is_new())
+				{
+					$this->_original_relations[$rel] = $data->implode_pk($data);
+				}
 			}
 		}
 	}
@@ -1058,17 +1089,26 @@ class Model implements \ArrayAccess, \Iterator
 	 */
 	public function & get($property, array $conditions = array())
 	{
+		// database columns
 		if (array_key_exists($property, static::properties()))
 		{
 			if ( ! array_key_exists($property, $this->_data))
 			{
-				// avoid a notice, we're returning by reference
-				$var = null;
-				return $var;
+				$result = null;
 			}
-
-			return $this->_data[$property];
+			elseif ($this->_sanitization_enabled)
+			{
+				// use a copy
+				$result = $this->_data[$property];
+			}
+			else
+			{
+				// use a reference
+				$result =& $this->_data[$property];
+			}
 		}
+
+		// related models
 		elseif ($rel = static::relations($property))
 		{
 			if ( ! array_key_exists($property, $this->_data_relations))
@@ -1076,24 +1116,57 @@ class Model implements \ArrayAccess, \Iterator
 				$this->_data_relations[$property] = $rel->get($this, $conditions);
 				$this->_update_original_relations(array($property));
 			}
-			return $this->_data_relations[$property];
+
+			$result =& $this->_data_relations[$property];
 		}
-		elseif (($value = $this->_get_eav($property)) !== false)
+
+		// EAV properties
+		elseif (($result = $this->_get_eav($property)) !== false)
 		{
-			return $value;
+			// nothing else to do here
 		}
+
+		// database view columns
 		elseif ($this->_view and in_array($property, static::$_views_cached[get_class($this)][$this->_view]['columns']))
 		{
-			return $this->_data[$property];
+			if ($this->_sanitization_enabled)
+			{
+				// use a copy
+				$result = $this->_data[$property];
+			}
+			else
+			{
+				// use a reference
+				$result =& $this->_data[$property];
+			}
 		}
+
+		// stored custom data
 		elseif (array_key_exists($property, $this->_custom_data))
 		{
-				return $this->_custom_data[$property];
+			if ($this->_sanitization_enabled)
+			{
+				// use a copy
+				$result = $this->_custom_data[$property];
+			}
+			else
+			{
+				// use a reference
+				$result =& $this->_custom_data[$property];
+			}
 		}
 		else
 		{
 			throw new \OutOfBoundsException('Property "'.$property.'" not found for '.get_class($this).'.');
 		}
+
+		// do we need to clean before returning the result?
+		if ($this->_sanitization_enabled)
+		{
+			$result = $this->_sanitize($property, $result);
+		}
+
+		return $result;
 	}
 
     /**
@@ -1134,7 +1207,7 @@ class Model implements \ArrayAccess, \Iterator
 				throw new \InvalidArgumentException('You need to pass both a property name and a value to set().');
 			}
 
-			if (in_array($property, static::primary_key()) and $this->{$property} !== null)
+			if (in_array($property, static::primary_key()) and $this->{$property} !== null and $this->{$property} != $value)
 			{
 				throw new \FuelException('Primary key on model '.get_class($this).' cannot be changed.');
 			}
@@ -1515,6 +1588,29 @@ class Model implements \ArrayAccess, \Iterator
 	}
 
 	/**
+	 * Disable an observer event
+	 *
+	 * @param string event to disable
+	 * @return void
+	 */
+	public function disable_event($event)
+	{
+		$this->_disabled_events[$event] = true;
+	}
+
+	/**
+	 * Enable a defined observer
+	 *
+	 * @param string class name of the observer (including namespace)
+	 * @param string event to enable, or null for all events
+	 * @return void
+	 */
+	public function enable_event($event)
+	{
+		unset($this->_disabled_events[$event]);
+	}
+
+	/**
 	 * Calls all observers for the current event
 	 *
 	 * @param  string
@@ -1524,7 +1620,8 @@ class Model implements \ArrayAccess, \Iterator
 		foreach ($this->observers() as $observer => $settings)
 		{
 			$events = isset($settings['events']) ? $settings['events'] : array();
-			if (empty($events) or in_array($event, $events))
+			if ((empty($events) or in_array($event, $events))
+				and empty($this->_disabled_events[$event]))
 			{
 				if ( ! class_exists($observer))
 				{
@@ -1576,7 +1673,8 @@ class Model implements \ArrayAccess, \Iterator
 			{
 				if (array_key_exists($p, $this->_original))
 				{
-					if (array_key_exists('data_type', $properties[$p]) and $properties[$p]['data_type'] == 'int')
+					if ((array_key_exists('type', $properties[$p]) and $properties[$p]['type'] == 'int') or
+						(array_key_exists('data_type', $properties[$p]) and $properties[$p]['data_type'] == 'int'))
 					{
 						if ($this->{$p} != $this->_original[$p])
 						{
@@ -1757,6 +1855,53 @@ class Model implements \ArrayAccess, \Iterator
 	}
 
 	/**
+	 * Enable sanitization mode in the object
+	 *
+	 * @return  $this
+	 */
+	public function sanitize()
+	{
+		$this->_sanitization_enabled = true;
+
+		return $this;
+	}
+
+	/**
+	 * Disable sanitization mode in the object
+	 *
+	 * @return  $this
+	 */
+	public function unsanitize()
+	{
+		$this->_sanitization_enabled = false;
+
+		return $this;
+	}
+
+	/**
+	 * Returns the current sanitization state of the object
+	 *
+	 * @return  bool
+	 */
+	public function sanitized()
+	{
+		return $this->_sanitization_enabled;
+	}
+
+	/**
+	 * Sanitizatize a data value
+	 *
+	 * @param  string  $field  Name of the property that is being sanitized
+	 * @param  mixed   $value  Value to sanitize
+	 *
+	 * @return  mixed
+	 */
+	protected function _sanitize($field, $value)
+	{
+		return \Security::clean($value, null, 'security.output_filter');
+	}
+
+	/**
 	 * Method for use with Fieldset::add_model()
 	 *
 	 * @param   Fieldset     Fieldset instance to add fields to
@@ -1825,7 +1970,7 @@ class Model implements \ArrayAccess, \Iterator
 			}
 			elseif (property_exists($this, '_eav') and ! empty(static::$_eav))
 			{
-				$this->{$property} = $value;
+				$this->_set_eav($property, $value);
 			}
 			else
 			{
@@ -1841,12 +1986,13 @@ class Model implements \ArrayAccess, \Iterator
 	 *
 	 * @param bool $custom
 	 * @param bool $recurse
+	 * @param bool $eav
 	 *
 	 * @internal param \Orm\whether $bool or not to include the custom data array
 	 *
 	 * @return  array
 	 */
-	public function to_array($custom = false, $recurse = false)
+	public function to_array($custom = false, $recurse = false, $eav = false)
 	{
 		// storage for the result
 		$array = array();
@@ -1902,7 +2048,7 @@ class Model implements \ArrayAccess, \Iterator
 					static::$to_array_references[] = get_class(reset($rel));
 					foreach ($rel as $id => $r)
 					{
-						$array[$name][$id] = $r->to_array($custom, true);
+						$array[$name][$id] = $r->to_array($custom, true, $eav);
 					}
 				}
 			}
@@ -1917,8 +2063,40 @@ class Model implements \ArrayAccess, \Iterator
 					else
 					{
 						static::$to_array_references[] = get_class($rel);
-						$array[$name] = $rel->to_array($custom, true);
+						$array[$name] = $rel->to_array($custom, true, $eav);
 					}
+				}
+			}
+		}
+
+		// get eav relations
+		if ($eav and property_exists(get_called_class(), '_eav'))
+		{
+			// loop through the defined EAV containers
+			foreach (static::$_eav as $rel => $settings)
+			{
+				// normalize the container definition, could be string or array
+				if (is_string($settings))
+				{
+					$rel = $settings;
+					$settings = array();
+				}
+
+				// determine attribute and value column names
+				$attr = \Arr::get($settings, 'attribute', 'attribute');
+				$val  = \Arr::get($settings, 'value', 'value');
+
+				// check if relation is present
+				if (array_key_exists($rel, $array))
+				{
+					// get eav properties
+					$container = \Arr::assoc_to_keyval($array[$rel], $attr, $val);
+
+					// merge eav properties to array without overwritting anything
+					$array = array_merge($container, $array);
+
+					// we don't need this relation anymore
+					unset($array[$rel]);
 				}
 			}
 		}

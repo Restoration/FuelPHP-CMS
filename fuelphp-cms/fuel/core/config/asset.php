@@ -6,7 +6,7 @@
  * @version    1.7
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2013 Fuel Development Team
+ * @copyright  2010 - 2014 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -75,7 +75,8 @@ return array(
 	 *
 	 * These MUST include the trailing slash ('/')
 	 */
-	'url' => Config::get('base_url'),
+	//'url' => Config::get('base_url'),
+	'url' => Config::get('base_url').'public/',
 
 	/**
 	 * Whether to append the assets last modified timestamp to the url.
@@ -107,4 +108,12 @@ return array(
 	 * The asset will then be skipped.
 	 */
 	'fail_silently' => false,
+
+	/**
+	 * When set to true, the Asset class will always true to resolve an asset URI
+	 * to a local asset, even if the asset URL is an absolute URL, for example
+	 * one that points to another hostname.
+	 */
+	'always_resolve' => false,
+
 );

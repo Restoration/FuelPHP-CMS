@@ -6,7 +6,7 @@
  * @version    1.7
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2013 Fuel Development Team
+ * @copyright  2010 - 2014 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -51,6 +51,13 @@ class Arr
 				$return[$k] = static::get($array, $k, $default);
 			}
 			return $return;
+		}
+
+		is_object($key) and $key = (string) $key;
+
+		if (array_key_exists($key, $array))
+		{
+			return $array[$key];
 		}
 
 		foreach (explode('.', $key) as $key_part)
@@ -237,6 +244,34 @@ class Arr
 			{
 				$output[$row[$key_field]] = $row[$val_field];
 			}
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Converts an array of key => values into a multi-dimensional associative array with the provided field names
+	 *
+	 * @param   array   $array      the array to convert
+	 * @param   string  $key_field  the field name of the key field
+	 * @param   string  $val_field  the field name of the value field
+	 * @return  array
+	 * @throws  \InvalidArgumentException
+	 */
+	public static function keyval_to_assoc($array, $key_field, $val_field)
+	{
+		if ( ! is_array($array) and ! $array instanceof \Iterator)
+		{
+			throw new \InvalidArgumentException('The first parameter must be an array.');
+		}
+
+		$output = array();
+		foreach ($array as $key => $value)
+		{
+			$output[] = array(
+				$key_field => $key,
+				$val_field => $value
+			);
 		}
 
 		return $output;
@@ -824,7 +859,7 @@ class Arr
 				// numeric keys are appended
 				if (is_int($k))
 				{
-					array_key_exists($k, $array) ? array_push($array, $v) : $array[$k] = $v;
+					array_key_exists($k, $array) ? $array[] = $v : $array[$k] = $v;
 				}
 				elseif (is_array($v) and array_key_exists($k, $array) and is_array($array[$k]))
 				{
@@ -948,9 +983,10 @@ class Arr
 	 * @param   string  $default   The default value
 	 * @param   bool    $recursive Whether to get keys recursive
 	 * @param   string  $delimiter The delimiter, when $recursive is true
+	 * @param   bool    $strict    If true, do a strict key comparison
 	 * @return  mixed
 	 */
-	public static function search($array, $value, $default = null, $recursive = true, $delimiter = '.')
+	public static function search($array, $value, $default = null, $recursive = true, $delimiter = '.', $strict = false)
 	{
 		if ( ! is_array($array) and ! $array instanceof \ArrayAccess)
 		{
@@ -967,7 +1003,7 @@ class Arr
 			throw new \InvalidArgumentException('Expects parameter 5 must be an string.');
 		}
 
-		$key = array_search($value, $array);
+		$key = array_search($value, $array, $strict);
 
 		if ($recursive and $key === false)
 		{
@@ -976,7 +1012,7 @@ class Arr
 			{
 				if (is_array($v))
 				{
-					$rk = static::search($v, $value, $default, true, $delimiter);
+					$rk = static::search($v, $value, $default, true, $delimiter, $strict);
 					if ($rk !== $default)
 					{
 						$keys = array($k, $rk);

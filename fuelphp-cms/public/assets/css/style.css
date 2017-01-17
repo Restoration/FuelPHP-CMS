@@ -1,0 +1,242 @@
+@charset "UTF-8";
+/* CSS Document */
+
+
+.right_link{
+	display: inline-block;
+	clear: both;
+	width: 100%;
+	margin: 20px 0;
+	text-align: right;
+}
+div.block-header div.muted i{
+	margin: 0px 4px auto auto;
+}
+
+/*画像投稿*/
+#changeInput{
+	margin: -5px 0 0;
+}
+#input-drag{
+	display: none;
+}
+#drag-area{
+	width: 80%;
+	min-height: 260px;
+	margin: 0 auto;
+	color: #ffffff;
+	background: rgba(128, 128, 128, 0.4);
+	text-align: center;
+	-moz-transition: background 0.7s linear;
+	-webkit-transition: background 0.7s linear;
+	transition: background 0.7s linear;
+}
+#drag-area .description{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+.image_area{
+	margin: auto auto 10px;
+}
+.image_area i.icon-remove{
+	clear: both;
+	float: right;
+}
+.image_area i.icon-remove:hover{
+	cursor: pointer;
+}
+/*ページネーション*/
+.datepicker:hover{
+	cursor: pointer;
+}
+.pagination {
+	margin: 20px auto 0;
+}
+.pagination ul {
+	display: inline-block;
+	*display: inline;
+	margin-bottom: 0;
+	margin-left: 0;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	*zoom: 1;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.pagination span {
+	display: inline;
+}
+.pagination span > a{
+	float: left;
+	padding: 4px 12px;
+	background-color: #ffffff;
+	border: 1px solid #dddddd;
+	border-left-width: 0;
+	text-decoration: none;
+	line-height: 20px;
+}
+.pagination span > a:hover,
+.pagination span > a:focus,
+.pagination span.active > a,
+.pagination span.active{
+	background-color: #f5f5f5;
+}
+.pagination span.active > a,
+.pagination span.active {
+	color: #999999;
+	cursor: default;
+}
+.pagination span.disabled,
+.pagination span.disabled > a,
+.pagination span.disabled > a:hover,
+.pagination span.disabled > a:focus {
+	color: #999999;
+	background-color: transparent;
+	cursor: default;
+}
+.pagination span:first-child > a,
+.pagination span:first-child > span {
+	border-left-width: 1px;
+	-webkit-border-bottom-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	-webkit-border-top-left-radius: 4px;
+	border-top-left-radius: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	-moz-border-radius-topleft: 4px;
+}
+.pagination span:last-child > a,
+.pagination span:last-child > span {
+	-webkit-border-top-right-radius: 4px;
+	border-top-right-radius: 4px;
+	-webkit-border-bottom-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 4px;
+}
+.pagination-centered {
+	text-align: center;
+}
+.pagination-right {
+	text-align: right;
+}
+/*タグ カテゴリー*/
+#tag_wrap,
+#category_wrap{
+	display: block;
+	overflow-x: hidden;
+	overflow-y: auto;
+	height: 200px;
+	margin: 0 0 16px;
+	padding: 10px 6px;
+	border: solid 1px rgba(145, 145, 145, 0.42);
+	background: rgba(241, 241, 241, 0.58);
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#tag_wrap_title,
+#category_wrap_title{
+	width: 90%;
+}
+#tag_wrap_title i,
+#category_wrap_title i{
+	float: right;
+    margin-top: 2px;
+    margin-right: -6px;
+}
+#tag_wrap_title i:hover,
+#category_wrap_title i:hover{
+	cursor: pointer;
+}
+#tag_wrap,
+#category_wrap{
+	display: block;
+}
+#tag_wrap ul,
+#category_wrap ul{
+	margin: 0;
+}
+#tag_wrap ul li,
+#category_wrap ul li{
+	list-style-position: inside;
+	list-style-type: none;
+}
+#tag_wrap ul li input,
+#category_wrap ul li input{
+	display: inline-block;
+	margin: 0 6px 0 0;
+}
+#tag_wrap ul li label,
+#category_wrap ul li label{
+	display: inline-block;
+}
+/*CLEditor*/
+.cleditorMain{
+	min-height: 500px;
+}
+/*モーダルウィンドウ*/
+#overLay{
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 900;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.5);
+}
+.modalContent{
+	display: block;
+	overflow:auto;
+	position: absolute;
+	z-index: 1000;
+	padding: 20px;
+	background:#ffffff;
+}
+#iframeFooter{
+	display: block;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	padding: 0px 20px 10px;
+	background: #ffffff;
+}
+#imageWindowInner iframe{
+	overflow: hidden;
+	width: 100%;
+	border: 0;
+}
+#imageIframe .pagenateArea{
+	display: none;
+}
+#insertImageBtn{
+	margin: 0 0 0 20px;
+}
+/*PostList*/
+#post_category_search_wrap{
+
+}
+#post_category_search_wrap .dropdown-menu{
+}
+
+/*コピーライト*/
+#copyright{
+	display: inline-block;
+	clear: both;
+	width: 90%;
+	text-align:right;
+	text-decoration: none;
+}
+#copyright a{
+	color: #000000;
+}
+/*Tablet*/
+@media (max-width: 768px){
+	.bs-docs-sidenav{
+		max-width: 100% !important;
+	}
+}

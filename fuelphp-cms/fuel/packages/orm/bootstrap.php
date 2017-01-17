@@ -8,7 +8,7 @@
  * @version    1.7
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2013 Fuel Development Team
+ * @copyright  2010 - 2014 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -45,3 +45,6 @@ Autoloader::add_classes(array(
 	'Orm\\ValidationFailed'     => __DIR__.'/classes/observer/validation.php',
 	'Orm\\RelationNotSoft'      => __DIR__.'/classes/model/soft.php',
 ));
+
+// Ensure the orm's config is loaded for Temporal
+\Config::load('orm', true);

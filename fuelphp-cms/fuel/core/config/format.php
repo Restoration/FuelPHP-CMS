@@ -6,7 +6,7 @@
  * @version    1.7
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2013 Fuel Development Team
+ * @copyright  2010 - 2014 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -25,18 +25,24 @@ return array(
 			'delimiter' => ',',
 			'enclosure' => '"',
 			'newline'   => "\n",
-			'escape'    => '"',
+			'escape'    => '\\',
 		),
 		'export' => array(
 			'delimiter' => ',',
 			'enclosure' => '"',
 			'newline'   => "\n",
-			'escape'    => '"',
+			'escape'    => '\\',
 		),
-		'regex_newline'   => '\n',
+		'regex_newline'   => "\n",
+		'enclose_numbers' => true,
 	),
 	'xml' => array(
 		'basenode' => 'xml',
 		'use_cdata' => false,
 	),
+	'json' => array(
+		'encode' => array(
+			'options' => JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP,
+		)
+	)
 );
