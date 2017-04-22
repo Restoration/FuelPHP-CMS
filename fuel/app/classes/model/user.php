@@ -16,57 +16,66 @@ class Model_User extends \Model{
 		'updated_at'
 	);
 
-	//idからユーザーを取得
+	/**
+	 * Get user info from user id
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function get_search_user()
     {
-	    $id = $_GET['id'];
+	    $id = \Input::get('id');
 		$table_name = 'tbl_user';
 		$query = \DB::select()->where('id','=',$id)->and_where('dltflg','=',0)->from($table_name);
 		return $query->execute()->as_array();
 	}
 
-	//追加
-    public static function insert_action()
-    {
-		$username = \Input::post('username');
-		$password = \Input::post('password');
-		$email = \Input::post('email');
-		$auth = \Auth::instance();
-		$auth->create_user($username,$password,$email);
-    }
-
-
-	//編集
-    public static function edit_action()
+	/**
+	 * idとpasswordからpasswordが存在しているかチェック
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
+	public static function password_search($old_password)
 	{
-		try {
-			\DB::start_transaction();
-			if(!empty($_POST['save'])){
-				//Update
-				$table_name = 'tbl_user';
-				$username = \Input::post('username');
-				$password = \Input::post('password');
-				$old_password = \Input::post('old_password');
-				$email = \Input::post('email');
-				$group = \Input::post('group');
-				$auth = \Auth::instance();
-				$update_user_array =
-					array(
-						'email'=> $email,
-						'password'=> $password,
-						'old_password' => $old_password
-					);
-				$query = \DB::update($table_name)->set(array('group'=>$group))->where('username','=',$username);
-				$query->execute();
-				if(!empty($password) && !empty($old_password)){
-					$auth->update_user($update_user_array);
-				}
-		    }
-			\DB::commit_transaction();
-		}catch(\Database_exception $e){
-			\DB::rollback_transaction();
-		}
+		$table_name = 'tbl_user';
+		$auth = \Auth::instance();
+		list($driver, $user_id) = $auth->get_user_id();
+		$password = $auth->hash_password($old_password);
+		$query = \DB::select(\DB::expr('COUNT(*) as count'))->where('password','=',$password)->and_where('id','=',$user_id)->from($table_name);
+		$result = $query->execute();
+		$result_arr = $result->current();
+		return $result_arr['count'];
 	}
+
+	/**
+	 * User Update
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
+    public static function edit_action($post)
+	{
+		if(!empty($_POST['save'])){
+			$auth = \Auth::instance();
+			$table_name = 'tbl_user';
+			$email = $post['email'];
+			$new_password = $post['password'];
+			$old_password = $post['old_password'];
+			$update_user_array = array(
+				'email'=> $email,
+				'password'=> $new_password,
+				'old_password' => $old_password
+			);
+			return $auth->update_user($update_user_array);
+	    }
+	}
+	/**
+	 *  Check user search from username
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function username_search($username)
     {
 		$table_name = 'tbl_user';
@@ -75,7 +84,12 @@ class Model_User extends \Model{
 		$result_arr = $result->current();
 		return $result_arr['count'];
 	}
-
+	/**
+	 * Check user search from email
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function email_search($email)
     {
 		$table_name = 'tbl_user';

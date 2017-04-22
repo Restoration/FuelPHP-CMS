@@ -15,10 +15,11 @@
 					<?php echo \Form::hidden(\Config::get('security.csrf_token_key'), \Security::fetch_token());?>
 					UserName：<?php echo $model_utility->h($username);?>
 					<div class="clear"></div>
-					<?php echo \Form::input('username',$model_utility->h($username), array('type'=>'hidden'));?>
-					<?php echo \Form::input('old_password','', array('class' => 'form-control span8','placeholder'=>'Old PassWord'));?>
-					<?php echo \Form::input('password','', array('class' => 'form-control span8','placeholder'=>'New PassWord'));?>
-					<?php echo \Form::input('email',$model_utility->h($email), array('class' => 'form-control span8','placeholder'=>'Confirm New PassWord'));?>
+					<?php echo \Form::hidden('user[username]',$model_utility->h($username));?>
+					<?php echo \Form::input('user[old_password]','', array('class' => 'form-control span8','placeholder'=>'Old PassWord','type'=>'password'));?>
+					<?php echo \Form::input('user[password]','', array('class' => 'form-control span8','placeholder'=>'New PassWord','type'=>'password'));?>
+					<?php echo \Form::input('user[password_conf]','', array('class' => 'form-control span8','placeholder'=>'New PassWord Confirmation','type'=>'password'));?>
+					<?php echo \Form::input('user[email]',$model_utility->h($email), array('class' => 'form-control span8','placeholder'=>'Email'));?>
 				</div>
 				<div class="right_link">
 					<?php echo \Form::submit('save','Update', array('class' => 'form-control btn btn-primary edit_btn'));?>
