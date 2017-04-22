@@ -415,10 +415,6 @@ $(document).ready(function(){
 		$('#category_wrap_title').titleAcMenu();
 		$('#tag_wrap_title').titleAcMenu();
 
-		$('#form_post_tag_search').tagit({
-		    removeConfirmation: false,
-		});
-
 	}
 	//インクリメンタルサーチ
 	var ajaxPostSearch = function(e){

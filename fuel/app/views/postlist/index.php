@@ -16,8 +16,6 @@
 					<ul class="dropdown-menu"  id="category_search_list"></ul>
 					<?php echo \Form::input('post_category_search','', array('type'=>'hidden'));?>
 				</div>
-				<?php // echo \Form::input('post_tag_search','', array('type'=>'hidden','name'=>'tags','class' => 'form-control span8 tagit-hidden-field','placeholder'=>'タグ検索'));?>
-				<input type="text" value="Tag1,Tag2" name="tags" id="form_post_tag_search">
 			</div>
 		</div>
 	</div>
