@@ -32,11 +32,3 @@
 </div>
 <?php echo \Pagination::instance('pagination');?>
 <?php include APPPATH . 'views/parts/footer.php';?>
-
-
-
-
-
-
-
-

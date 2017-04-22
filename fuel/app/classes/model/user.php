@@ -54,19 +54,23 @@ class Model_User extends \Model{
 	 * @access  public
 	 * @return  Response
 	 */
-    public static function edit_action($post)
+    public static function edit_action($post,$flg = 1)
 	{
 		if(!empty($_POST['save'])){
 			$auth = \Auth::instance();
 			$table_name = 'tbl_user';
 			$email = $post['email'];
-			$new_password = $post['password'];
-			$old_password = $post['old_password'];
-			$update_user_array = array(
-				'email'=> $email,
-				'password'=> $new_password,
-				'old_password' => $old_password
-			);
+			if($flg){
+				$new_password = $post['password'];
+				$old_password = $post['old_password'];
+				$update_user_array = array(
+					'email'=> $email,
+					'password'=> $new_password,
+					'old_password' => $old_password
+				);
+			} else {
+				$update_user_array = array('email'=> $email);
+			}
 			return $auth->update_user($update_user_array);
 	    }
 	}
