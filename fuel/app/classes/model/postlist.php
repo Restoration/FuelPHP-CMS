@@ -10,15 +10,11 @@ class Model_Postlist extends Model_Crud{
 		$count_sql->where('dltflg','=',0);
 		$count_result = $count_sql->execute();
 		$count = count($count_result);
-
-		//ページネーション
 		$config = array(
-			//'pagination_url' => '',
 			'total_items'    => $count,
 			'per_page'       => 10,
 			'uri_segment'    => 'page',
 		);
-		//ページャーインスタンス作成
 		$pagination = \Pagination::forge('pagination', $config);
 		$query = \DB::select()->from($table_name);
 		$query->where('dltflg','=',0);
@@ -79,9 +75,7 @@ class Model_Postlist extends Model_Crud{
 			}
 		} else {
 			$data = $_POST['edit'];
-			$data['modified'] = date("Y-m-d H:i:s");
-			$data['dltflg'] = 1;
-			$query = \DB::update($table_name)->where('post_id','=',$data['post_id'])->set($data);
+			$query = \DB::update($table_name)->where('post_id','=',$data['post_id'])->set(array('modified'=>date("Y-m-d H:i:s"),'dltflg'=>1));
 			return $query->execute();
 		}
 /*
@@ -108,14 +102,11 @@ class Model_Postlist extends Model_Crud{
 		$count_result = $count_sql->execute()->as_array();
 		$count = count($count_result);
 
-		//ページネーション
 		$config = array(
-			//'pagination_url' => '',
 			'total_items'    => $count,
 			'per_page'       => 10,
 			'uri_segment'    => 'page',
 		);
-		//ページャーインスタンス作成
 		$pagination = \Pagination::forge('pagination', $config);
 		$query = \DB::select()->from($table_name);
 		if(strlen($post) > 0){
