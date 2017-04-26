@@ -27,16 +27,6 @@ class Controller_Main extends Controller_App
 
 	 /**
 	 *
-	 * 404 Error
-	 *
-	 */
-	public function action_404()
-	{
-		return \Response::forge(\Presenter::forge('main/404'), 404);
-	}
-
-	 /**
-	 *
 	 * Post Add Action
 	 *
 	 */

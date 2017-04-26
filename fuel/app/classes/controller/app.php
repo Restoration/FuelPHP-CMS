@@ -54,10 +54,10 @@ class Controller_App extends Controller_Template
 			$validation = $this->validate_login();
 			$errors = $validation->error();
 			if (empty($errors)) {
-				// ログイン認証を行う
+				// Check Login
 				$auth = \Auth::instance();
 				if ($auth->login($username, $password)) {
-					// ログイン成功
+					// Success
 					\Response::redirect('main');
 				}
 				$result_validate[] = 'I failed to login.';
@@ -75,6 +75,18 @@ class Controller_App extends Controller_Template
 	{
 		\Auth::logout();
 		\Response::redirect('app/login');
+	}
+
+	/**
+	 * The 404 action for the application.
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
+	public function action_404()
+	{
+		$this->template->title = '404 Not Found';
+		$this->template->content = \View::forge('app/404');
 	}
 
 }
