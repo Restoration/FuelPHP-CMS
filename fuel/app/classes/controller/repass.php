@@ -136,7 +136,7 @@ class Controller_Repass extends Controller_App
 		$password_conf = $post['password_conf'];
 		$validate = \Validation::forge();
 
-		$validate->add('password','パスワード')
+		$validate->add('password','Password')
 			->add_rule('trim')
 			->add_rule('min_length', 6)
 			->add_rule('max_length', 255)
