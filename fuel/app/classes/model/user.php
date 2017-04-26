@@ -102,4 +102,102 @@ class Model_User extends \Model{
 		$result_arr = $result->current();
 		return $result_arr['count'];
 	}
+
+	/**
+	 * Check user search from username and email
+	 *
+	 * @access  public
+	 * @params  UserName
+	 * @params  Email
+	 * @return  Response
+	 */
+    public function username_email_search($username,$email)
+    {
+		$table_name = 'tbl_user';
+		$query = \DB::select()->where('username','=',$username)->and_where('email','=',$email)->from($table_name);
+		return $query->execute()->as_array();
+	}
+
+	/**
+	 * Create one time password
+	 *
+	 * @access  public
+	 * @params  UserID
+	 * @return  Response
+	 */
+    public static function create_ontimepass($user_id,$flg = true)
+    {
+	    $table_name = 'tbl_user';
+	    if($flg){
+			$onepass = md5(time());
+	    } else {
+		    $onepass = '';
+	    }
+		$query = \DB::update($table_name)->value('onepass',$onepass)->where('id','=',$user_id);
+		$query->execute();
+		return $onepass;
+	}
+	/**
+	 * Search user count from one time password
+	 *
+	 * @access  public
+	 * @params  One Time Password
+	 * @return  Response
+	 */
+    public static function get_onepass_user($onepass)
+    {
+	    $table_name = 'tbl_user';
+		$query = \DB::select()->where('onepass','=',$onepass)->from($table_name);
+		return count($query->execute()->as_array());
+	}
+	/**
+	 * Search from one time password and delete user
+	 *
+	 * @access  public
+	 * @params  One Time Password
+	 * @return  Response
+	 */
+    public static function delete_user($onepass)
+    {
+		try {
+			\DB::start_transaction();
+			$table_name = 'tbl_user';
+			$query = \DB::select('username')->where('onepass','=',$onepass)->from($table_name);
+			$user = $query->execute();
+			$auth = \Auth::instance();
+			$auth->delete_user($user[0]['username']);
+			\DB::commit_transaction();
+			return true;
+		}catch(\Database_exception $e){
+			\DB::rollback_transaction();
+			return false;
+		}
+	}
+	/**
+	 * Search from one time password and change user's password
+	 *
+	 * @access  public
+	 * @params  One Time Password
+	 * @params  Password
+	 * @return  Response
+	 */
+    public static function repass($onepass,$password)
+    {
+		try {
+			\DB::start_transaction();
+			$table_name = 'tbl_user';
+			$query = \DB::select()->where('onepass','=',$onepass)->from($table_name);
+			$user = $query->execute();
+			$username = $user[0]['username'];
+			$auth = \Auth::instance();
+			$old_password = $auth->reset_password($username);
+			$auth->change_password($old_password,$password,$username);
+			$auth->login($username, $password);
+			\DB::commit_transaction();
+			return true;
+		}catch(\Database_exception $e){
+			\DB::rollback_transaction();
+			return false;
+		}
+	}
 }

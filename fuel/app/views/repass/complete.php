@@ -1,8 +1,7 @@
 <div id="login">
 	<div class="form-signin">
-		<h2 class="form-signin-heading">Password reissue procedure completed</h2>
-		<p> We have sent a reissue procedure e-mail to your designated e-mail address. </p>
-		<p> Please re-issue procedure from the link of mail you received. </p>
-		<div class="right_link"><?php echo Html::anchor('app/login','戻る',array('class'=>'btn'));?></div>
-	</div>
-</div> <!-- /#login -->
+	    <h2 class="form-signin-heading">パスワード再発行手続き完了</h2>
+		<p>ご指定のメールアドレスへ再発行手続のメールを送信いたしました。</p>
+		<p>お受け取りになりましたメールのリンクから再発行手続きをお願いします。</p>
+	</div> <!-- /.form-signin -->
+</div>

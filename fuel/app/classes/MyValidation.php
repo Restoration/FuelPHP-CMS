@@ -16,4 +16,14 @@ class MyValidation
 			return true;
 		}
 	}
+
+	public static function _validation_username_find($val){
+		$model_user = new Model_User();
+		$count = $model_user->username_search($val);
+		if($count != 1){
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
