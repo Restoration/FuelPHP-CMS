@@ -23,6 +23,7 @@ class Controller_User extends Controller
 	 * User Update Validation
 	 *
 	 * @access  private
+	 * @params  post data
 	 * @return  Response
 	 */
 	private function validate_user_update($post)
@@ -67,6 +68,7 @@ class Controller_User extends Controller
 	 * Email Validation
 	 *
 	 * @access  private
+	 * @params  post data
 	 * @return  Response
 	 */
 	private function validate_user_emial_update($post)
@@ -89,7 +91,8 @@ class Controller_User extends Controller
 	 * @access  public
 	 * @return  Response
 	 */
-	public function action_update(){
+	public function action_update()
+	{
 		if(\Input::method() == 'POST'){
 			$auth = \Auth::instance();
 			$model_user = new Model_User();

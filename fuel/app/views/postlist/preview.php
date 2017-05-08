@@ -1,9 +1,4 @@
-<?php
-	include APPPATH . 'views/parts/header.php';
-	$model_main = new Model_Main();
-	$post = \Session::get_flash('post');
-	$id = $_GET['id'];
-?>
+<?php include APPPATH . 'views/parts/header.php';?>
 <div class="row-fluid">
 	<!-- block -->
 	<div class="block">
@@ -14,9 +9,9 @@
 			<?php echo \Form::open('postlist/edit');?>
 	        <div class="span9">
 		    <?php echo \Form::hidden(\Config::get('security.csrf_token_key'), \Security::fetch_token());?>
-            <?php echo \Form::hidden('edit[post_id]',$model_main->h($id));?>
-            <?php echo \Form::input('edit[post_title]',$model_utility->h($result[0]['post_title']), array('class' => 'form-control span8'));?>
-            	<?php echo \Form::input('edit[registerdate]',$model_main->h(str_replace('-','/',substr($result[0]['registerdate'],0,10))), array('class' => 'form-control span8 datepicker','placeholder'=>'Date','readonly'=>'readonly'));?>
+            <?php echo \Form::hidden('edit[post_id]',$utility->h($id));?>
+            <?php echo \Form::input('edit[post_title]',$utility->h($result[0]['post_title']), array('class' => 'form-control span8'));?>
+            	<?php echo \Form::input('edit[registerdate]',$utility->h(str_replace('-','/',substr($result[0]['registerdate'],0,10))), array('class' => 'form-control span8 datepicker','placeholder'=>'Date','readonly'=>'readonly'));?>
               <?php echo \Form::textarea('edit[post_message]',$result[0]['post_message'], array('id'=>'clEditor','class' => 'form-control'));?>
 			</div>
 			<span class="span3">

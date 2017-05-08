@@ -1,10 +1,13 @@
 <?php
 class Controller_Category extends Controller_App
 {
+
 	 /**
 	 *
-	 * Index Action
+	 * Category index page
 	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_index()
 	{
@@ -24,17 +27,10 @@ class Controller_Category extends Controller_App
 
 	 /**
 	 *
-	 * 404 Error
+	 * Show category detail page
 	 *
-	 */
-	public function action_404(){
-		return \Response::forge(\Presenter::forge('main/404'), 404);
-	}
-
-	 /**
-	 *
-	 * Show Preview Page
-	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_preview()
 	{
@@ -43,13 +39,12 @@ class Controller_Category extends Controller_App
 				\Response::redirect('category/index', 'refresh');
 		}
 		$view = \View::forge('category/preview');
-		$model_utility = new Model_Utility();
 		$model_category = new Model_Category();
 		$preview = $model_category->preview($id);
 		$category_result = $model_category->get_result();
 		$r_category_result = $this->category_parse($category_result);
-		$view->set('result',$preview);
 		$view->set('id',$id);
+		$view->set('result',$preview);
 		$view->set('category_result',$category_result);
 		$view->set('r_category_result',$r_category_result);
 		return $view;
@@ -57,8 +52,10 @@ class Controller_Category extends Controller_App
 
 	 /**
 	 *
-	 * Category Add Action
+	 * Category add action
 	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_add()
 	{
@@ -92,10 +89,11 @@ class Controller_Category extends Controller_App
 		}
 	}
 
-	 /**
+	/**
+	 * Category edit action
 	 *
-	 * Category Edit Action
-	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_edit()
 	{
@@ -133,10 +131,12 @@ class Controller_Category extends Controller_App
 			return $view;
 		}
 	}
-	 /**
+
+	/**
+	 * Category search for Ajax
 	 *
-	 * Category Search Action
-	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_category_search()
 	{
@@ -157,10 +157,13 @@ class Controller_Category extends Controller_App
 			exit();
 		}
 	}
-	 /**
+
+	/**
+	 * Category add validation
 	 *
-	 * Category Validation
-	 *
+	 * @access  private
+	 * @params  post data
+	 * @return  Response
 	 */
 	private function validate_category($post)
 	{
@@ -170,10 +173,11 @@ class Controller_Category extends Controller_App
 		return $errors;
 	}
 
-	 /**
-	 *
+	/**
 	 * Category parse
 	 *
+	 * @access  private
+	 * @return  Response
 	 */
 	private function category_parse($category_result,$separate_flg = true)
 	{
@@ -224,7 +228,5 @@ class Controller_Category extends Controller_App
 		}
 		return $r_category_result;
 	}
-
-
 }
 ?>

@@ -1,8 +1,4 @@
-<?php
-	include APPPATH . 'views/parts/header.php';
-	$model_main = new Model_Main();
-	echo \Asset::js('vendors/jquery-1.9.1.min.js');
-?>
+<?php include APPPATH . 'views/parts/header.php';?>
 <div class="row-fluid">
 	<!-- block -->
 	<div class="block">
@@ -58,10 +54,10 @@
 								}
 							?>
 							<div class="span3 image_area">
-								<a href="<?php echo $model_utility->h($result[$i]['file_saved_abs_to'].$result[$i]['file_saved_as']);?>" data-lightbox="image-set" class="thumbnail">
-									<img src="<?php echo $model_utility->h($result[$i]['file_saved_abs_to'].$result[$i]['file_saved_as']);?>" alt="<?php echo $model_utility->h($result[$i]['file_name']);?>" style="width: 260px; height: 180px;" />
+								<a href="<?php echo $utility->h($result[$i]['file_saved_abs_to'].$result[$i]['file_saved_as']);?>" data-lightbox="image-set" class="thumbnail">
+									<img src="<?php echo $utility->h($result[$i]['file_saved_abs_to'].$result[$i]['file_saved_as']);?>" alt="<?php echo $utility->h($result[$i]['file_name']);?>" style="width: 260px; height: 180px;" />
 								</a>
-								<i class="icon-remove" data-file-id="<?php echo $model_utility->h($result[$i]['file_id'])?>" data-file-saved-path="<?php echo $model_utility->h($result[$i]['file_saved_to'].$result[$i]['file_saved_as'])?>"></i>
+								<i class="icon-remove" data-file-id="<?php echo $utility->h($result[$i]['file_id'])?>" data-file-saved-path="<?php echo $utility->h($result[$i]['file_saved_to'].$result[$i]['file_saved_as'])?>"></i>
 							</div>
 					<?php endfor;?>
 				<?php endif;?>
@@ -71,5 +67,7 @@
 	</div>
 	<!-- /block -->
 </div>
-<?php echo \Pagination::instance('pagination');?>
+<div id="pagination_wrap">
+	<?php echo \Pagination::instance('pagination');?>
+</div>
 <?php include APPPATH . 'views/parts/footer.php';?>

@@ -1,10 +1,12 @@
 <?php
 class Controller_Main extends Controller_App
 {
-	 /**
+
+	/**
+	 * Main index page
 	 *
-	 * Index Action
-	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_index()
 	{
@@ -13,7 +15,6 @@ class Controller_Main extends Controller_App
 		}
 		$view = \View::forge('main/index');
 		$model_main = new Model_Main();
-		$model_utility = new Model_Utility();
 		$model_tag = new Model_Tag();
 		$model_category = new Model_Category();
 		$result = $model_main->get_result();
@@ -25,10 +26,11 @@ class Controller_Main extends Controller_App
 		return $view;
 	}
 
-	 /**
+	/**
+	 * Main post add action
 	 *
-	 * Post Add Action
-	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_add()
 	{
@@ -50,7 +52,6 @@ class Controller_Main extends Controller_App
 			} else {
 				$view = \View::forge('main/index');
 				$model_main = new Model_Main();
-				$model_utility = new Model_Utility();
 				$model_tag = new Model_Tag();
 				$model_category = new Model_Category();
 				$result = $model_main->get_result();
@@ -70,33 +71,11 @@ class Controller_Main extends Controller_App
 		}
 	}
 
-	 /**
+	/**
+	 * Post add validation
 	 *
-	 *
-	 *
-	 */
-	/*
-	public function action_preview()
-	{
-		if(\Input::method() != 'GET'){
-			\Response::redirect('postlist', 'refresh');
-		}
-		$id = $_GET['id'];
-		$edit_key = $_GET['edit_key'];
-		$view = \View::forge('main/preview');
-		$model_main = new Model_Main();
-		$preview = $model_main->preview($id);
-		if($edit_key != $preview[0]['post_key']){
-			\Response::redirect('main/index', 'refresh');
-		}
-		$view->set('result',$preview);
-		return $view;
-	}
-	*/
-	 /**
-	 *
-	 * Post Validation
-	 *
+	 * @access  private
+	 * @return  Response
 	 */
 	private function validate_post($post)
 	{

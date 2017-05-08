@@ -1,10 +1,15 @@
 <?php
 class Model_Postlist extends Model_Crud{
 
-	//結果取得
+	/**
+	 * Get post data
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function get_result()
     {
-		$table_name = 'tbl_post';
+		$table_name = 'trn_post';
 
 		$count_sql = \DB::select('post_id','post_title','post_message','registerdate','dltflg')->from($table_name);
 		$count_sql->where('dltflg','=',0);
@@ -24,11 +29,15 @@ class Model_Postlist extends Model_Crud{
 		return $result;
 	}
 
-	//更新,削除
+	/**
+	 * Post edit action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function edit_action()
     {
-		$table_name = 'tbl_post';
-
+		$table_name = 'trn_post';
 		if(!empty($_POST['edit']['save'])){
 			try {
 				\DB::start_transaction();
@@ -40,7 +49,7 @@ class Model_Postlist extends Model_Crud{
 
 				$data = $_POST['edit'];
 				if($_POST['edit']['post_title'] == ''){
-					$data['post_title'] = 'タイトル無し';
+					$data['post_title'] = 'No Title';
 				}
 				$data['modified'] = date("Y-m-d H:i:s");
 				$query = \DB::update($table_name)->where('post_id','=',$data['post_id'])->set($data);
@@ -78,21 +87,24 @@ class Model_Postlist extends Model_Crud{
 			$query = \DB::update($table_name)->where('post_id','=',$data['post_id'])->set(array('modified'=>date("Y-m-d H:i:s"),'dltflg'=>1));
 			return $query->execute();
 		}
-/*
-		echo DB::last_query();
-		exit();
-*/
     }
 
-	//更新,削除
+	/**
+	 * Post search from search word
+	 *
+	 * @access  public
+	 * @params  search word
+	 * @return  Response
+	 */
     public static function post_search_action($search_value)
     {
-		$table_name = 'tbl_post';
+		$table_name = 'trn_post';
 		$post = $search_value;
 
 		$count_sql = \DB::select('post_id','post_title','post_message','registerdate','dltflg')->from($table_name);
 		if(strlen($post) > 0){
-		    $post = str_replace("　", " ",$post);//全角を半角に変換
+			// Convert full-width characters to half-width characters
+		    $post = str_replace("　", " ",$post);
 		    $array = explode(" ",$post);
 		    for($i =0; $i <count($array); $i++){
 		        $count_sql->and_where('post_title', 'LIKE',"%$array[$i]%");
@@ -101,7 +113,6 @@ class Model_Postlist extends Model_Crud{
 		$count_sql->and_where('dltflg','=',0);
 		$count_result = $count_sql->execute()->as_array();
 		$count = count($count_result);
-
 		$config = array(
 			'total_items'    => $count,
 			'per_page'       => 10,
@@ -110,7 +121,8 @@ class Model_Postlist extends Model_Crud{
 		$pagination = \Pagination::forge('pagination', $config);
 		$query = \DB::select()->from($table_name);
 		if(strlen($post) > 0){
-		    $post = str_replace("　", " ",$post);//全角を半角に変換
+			// Convert full-width characters to half-width characters
+		    $post = str_replace("　", " ",$post);
 		    $array = explode(" ",$post);
 		    for($i =0; $i <count($array); $i++){
 		        $query->and_where('post_title', 'LIKE',"%$array[$i]%");

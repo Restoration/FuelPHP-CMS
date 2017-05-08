@@ -1,10 +1,8 @@
-<?php
-	$model_utility = new Model_Utility();
-?>
+<?php $utility = new Utility();?>
 <!DOCTYPE html>
 <html class="no-js">
 <head>
-<title></title>
+<title>FuelPHP CMS</title>
 <!-- Bootstrap -->
 <link rel="stylesheet" type="text/css" href="vendors/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css">
 </link>
@@ -45,7 +43,7 @@
 
 												<?php for($i =0; $i<count($result); $i++):?>
 													<div class="span3 image_area">
-														<img src="<?php echo $model_utility->h($result[$i]['file_saved_to'].$result[$i]['file_saved_as']);?>" alt="<?php echo $model_utility->h($result[$i]['file_name']);?>" style="width: 260px; height: 180px;" data-image-name="<?php echo $model_utility->h($result[$i]['file_name']);?>" data-image-id="<?php echo $model_utility->h($result[$i]['file_id']);?>" data-insert="0" />
+														<img src="<?php echo $utility->h($result[$i]['file_saved_to'].$result[$i]['file_saved_as']);?>" alt="<?php echo $utility->h($result[$i]['file_name']);?>" style="width: 260px; height: 180px;" data-image-name="<?php echo $utility->h($result[$i]['file_name']);?>" data-image-id="<?php echo $utility->h($result[$i]['file_id']);?>" data-insert="0" />
 													</div>
 												<?php endfor;?>
 										<?php endif;?>

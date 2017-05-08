@@ -1,7 +1,7 @@
 <div id="login">
 	<div class="form-signin">
-	    <h2 class="form-signin-heading">パスワード再発行手続き完了</h2>
-		<p>ご指定のメールアドレスへ再発行手続のメールを送信いたしました。</p>
-		<p>お受け取りになりましたメールのリンクから再発行手続きをお願いします。</p>
+	    <h2 class="form-signin-heading">Password reissue procedure completed</h2>
+		<p>We have sent a reissue procedure e-mail to your designated e-mail address.</p>
+		<p>Please reissue procedure from the link of the mail which I received.</p>
 	</div> <!-- /.form-signin -->
 </div>

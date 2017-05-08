@@ -1,6 +1,12 @@
 <?php
 class Controller_Tag extends Controller_App
 {
+	/**
+	 * Tag index page
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_index()
 	{
 		if(!\Auth::check()){
@@ -12,25 +18,36 @@ class Controller_Tag extends Controller_App
 		$view->set('result',$result);
 		return $view;
 	}
-	//404エラー
-	public function action_404()
-	{
-		return \Response::forge(\Presenter::forge('main/404'), 404);
-	}
-	//編集画面表示
+
+	/**
+	 * Show tag detail page
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_preview()
 	{
-		$id = $_GET['id'];
+		$id = \Input::get('id');
+		if(\Input::method() != 'GET' || !$id){
+				\Response::redirect('tag/index', 'refresh');
+		}
 		$view = \View::forge('tag/preview');
 		$model_utility = new Model_Utility();
 		$model_tag = new Model_Tag();
 		$preview = $model_tag->preview($id);
 		$tag_result = $model_tag->get_result();
+		$view->set('id',$id);
 		$view->set('result',$preview);
 		$view->set('tag_result',$tag_result);
 		return $view;
 	}
-	//タグ追加
+
+	/**
+	 * Add tag action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_add()
 	{
 		if(\Input::method() == 'POST'){
@@ -62,7 +79,12 @@ class Controller_Tag extends Controller_App
 		}
 	}
 
-	//編集,削除アクション
+	/**
+	 * Update tag action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_edit()
 	{
 		if(\Input::method() == 'POST'){
@@ -99,6 +121,12 @@ class Controller_Tag extends Controller_App
 		}
 	}
 
+	/**
+	 * Tag search action for Ajax
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_tag_search()
 	{
 		if($_POST['action'] == 'ajaxTagSearch'){
@@ -113,6 +141,12 @@ class Controller_Tag extends Controller_App
 		}
 	}
 
+	/**
+	 * Add tag validation
+	 *
+	 * @access  private
+	 * @return  Response
+	 */
 	private function validate_tag($post)
 	{
 		$validate = \Validation::forge();

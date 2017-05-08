@@ -1,18 +1,16 @@
 <?php
 class Model_Utility extends Model_Crud{
 
-	public static function h($val)
-	{
-		if(is_array($val)){
-			return array_map('h',$val);
-		} else {
-			return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
-		}
-	}
-	//idのリクエストがあれば結果を返す
+	/**
+	 * If there is a request for id it will return the result
+	 *
+	 * @access  public
+	 * @params  id
+	 * @return  Response
+	 */
 	public static function preview($id)
 	{
-		$table_name = 'tbl_post';
+		$table_name = 'trn_post';
 		$mtr_tag_table = 'mtr_tag';
 		$trn_tag_table = 'trn_tag';
 		$mtr_category_table = 'mtr_category';
@@ -38,38 +36,18 @@ class Model_Utility extends Model_Crud{
 		$query->group_by("$table_name.post_id");
 		return $query->execute()->as_array();
 	}
-	//idのリクエストがあればユーザーを返す
+
+	/**
+	 * Return the user data if there is a request for id
+	 *
+	 * @access  public
+	 * @params  id
+	 * @return  Response
+	 */
 	public static function preview_user($id)
 	{
-		$table_name = 'tbl_user';
+		$table_name = 'mtr_user';
 		$query = \DB::select()->where('id','=',$id)->from($table_name);
 		return $query->execute()->as_array();
-	}
-
-	//その日付のディレクトリ作成
-	public function make_date_dir($dir)
-	{
-		if(!is_dir($dir)){
-			mkdir($dir);
-		}
-		$date_array = array(date('Y'),date('m'));
-		for($i=0; $i < count($date_array); $i++){
-			$this->make_dir($dir,$date_array[$i]);
-			$dir .= '/'.$date_array[$i];
-		}
-		return true;
-	}
-
-	function make_dir($dir,$name){
-		if(substr($dir,-1) !== "/"){
-			$dir .= "/";
-		}
-		if(is_dir($dir.$name)){
-			return false;
-		}
-		$dir .= $name;
-		if(mkdir($dir)){
-			return true;
-		}
 	}
 }

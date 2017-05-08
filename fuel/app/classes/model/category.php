@@ -1,24 +1,24 @@
 <?php
 class Model_Category extends Model_Crud{
 
-	//結果取得
+	/**
+	 * Get category Data
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function get_result()
     {
 		$table_name = 'mtr_category';
-
 		$count_sql = \DB::select()->from($table_name);
 		$count_sql->where('dltflg','=',0);
 		$count_result = $count_sql->execute();
 		$count = count($count_result);
-
-		//ページネーション
 		$config = array(
-			//'pagination_url' => '',
 			'total_items'    => $count,
 			'per_page'       => 10,
 			'uri_segment'    => 'page',
 		);
-		//ページャーインスタンス作成
 		$pagination = \Pagination::forge('pagination', $config);
 		$query = \DB::select()->from($table_name);
 		$query->where('dltflg','=',0);
@@ -28,7 +28,12 @@ class Model_Category extends Model_Crud{
 		return $result;
 	}
 
-	//カテゴリーのみ取得
+	/**
+	 * Get category data from mtr_category
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function get_category()
     {
 		$table_name = 'mtr_category';
@@ -39,7 +44,13 @@ class Model_Category extends Model_Crud{
 		return $result;
 	}
 
-	//idのリクエストがあれば結果を返す
+	/**
+	 * Request tag data from tag id
+	 *
+	 * @access  public
+	 * @params  id
+	 * @return  Response
+	 */
 	public static function preview($id){
 		$table_name = 'mtr_category';
 		$query = \DB::select()->from($table_name);
@@ -49,12 +60,16 @@ class Model_Category extends Model_Crud{
 	}
 
 
-	//追加
+	/**
+	 * Category insert action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function insert_action()
     {
 		$table_name = 'mtr_category';
 		unset($_POST['add']['save']);
-
 		if(empty($_POST['add']['category_slug'])){
 			$category_name = preg_replace('/(\s|　)/','-',$_POST['add']['category_name']);
 			$category_name = mb_strtolower($category_name);
@@ -63,7 +78,6 @@ class Model_Category extends Model_Crud{
 		$model_category = new Model_Category();
 		$count = $model_category->validate_slug($_POST['add']['category_slug']);
 		if($count >= 1){
-
 			$suffix = '-'.(intval($count)+1);
 			$_POST['add']['category_slug'] = $_POST['add']['category_slug'].$suffix;
 			$re_count = $model_category->validate_slug($_POST['add']['category_slug']);
@@ -84,7 +98,12 @@ class Model_Category extends Model_Crud{
 		return $query->execute();
     }
 
-	//更新,削除
+	/**
+	 * Category edit action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function edit_action()
     {
 		$table_name = 'mtr_category';
@@ -116,10 +135,6 @@ class Model_Category extends Model_Crud{
 					}
 				}
 			}
-
-
-
-
 			$data = $_POST['edit'];
 			$data['modified'] = date("Y-m-d H:i:s");
 			$query = \DB::update($table_name)->where('category_id','=',$data['category_id'])->set($data);
@@ -133,7 +148,13 @@ class Model_Category extends Model_Crud{
 		}
     }
 
-	//検索
+	/**
+	 * Category search for ajax
+	 *
+	 * @access  public
+	 * @params  search word
+	 * @return  Response
+	 */
     public static function category_search_action($search_value)
     {
 		$table_name = 'mtr_category';
@@ -141,7 +162,8 @@ class Model_Category extends Model_Crud{
 
 		$count_sql = \DB::select()->from($table_name);
 		if(strlen($post) > 0){
-		    $post = str_replace("　", " ",$post);//全角を半角に変換
+			// Convert full-width characters to half-width characters
+		    $post = str_replace("　", " ",$post);
 		    $array = explode(" ",$post);
 		    for($i =0; $i <count($array); $i++){
 		        $count_sql->and_where('category_name', 'LIKE',"%$array[$i]%");
@@ -150,19 +172,16 @@ class Model_Category extends Model_Crud{
 		$count_sql->and_where('dltflg','=',0);
 		$count_result = $count_sql->execute()->as_array();
 		$count = count($count_result);
-
-		//ページネーション
 		$config = array(
-			//'pagination_url' => '',
 			'total_items'    => $count,
 			'per_page'       => 10,
 			'uri_segment'    => 'page',
 		);
-		//ページャーインスタンス作成
 		$pagination = \Pagination::forge('pagination', $config);
 		$query = \DB::select()->from($table_name);
 		if(strlen($post) > 0){
-		    $post = str_replace("　", " ",$post);//全角を半角に変換
+			// Convert full-width characters to half-width characters
+		    $post = str_replace("　", " ",$post);
 		    $array = explode(" ",$post);
 		    for($i =0; $i <count($array); $i++){
 		        $query->and_where('category_name', 'LIKE',"%$array[$i]%");
@@ -175,7 +194,13 @@ class Model_Category extends Model_Crud{
 		$result['pagination'] = \Pagination::instance('pagination')->render();
 		return $result;
     }
-
+	/**
+	 * Category slug add validation
+	 *
+	 * @access  private
+	 * @params  url slug
+	 * @return  Response
+	 */
 	private static function validate_slug($slug)
 	{
 		$table_name = 'mtr_category';
@@ -187,6 +212,14 @@ class Model_Category extends Model_Crud{
 		return $count;
 	}
 
+	/**
+	 * Category slug update validation
+	 *
+	 * @access  private
+	 * @params  category id
+	 * @params  url slug
+	 * @return  Response
+	 */
 	private static function validate_update_slug($id,$slug)
 	{
 		$table_name = 'mtr_category';
@@ -203,7 +236,4 @@ class Model_Category extends Model_Crud{
 		}
 		return $count;
 	}
-
-
-
 }

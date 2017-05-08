@@ -1,9 +1,4 @@
-<?php
-	include APPPATH . 'views/parts/header.php';
-	$model_main = new Model_Main();
-	$model_image = new Model_Image();
-	$post = \Session::get_flash('post');
- ?>
+<?php include APPPATH . 'views/parts/header.php';?>
 <div class="row-fluid">
 	<!-- block -->
 	<div class="block">
@@ -14,8 +9,8 @@
 			<?php echo \Form::open('main/add');?>
 			<span class="span9">
 				<?php echo \Form::hidden(\Config::get('security.csrf_token_key'), \Security::fetch_token());?>
-				<?php echo \Form::input('add[post_title]',$model_utility->h($post['post_title']), array('class' => 'form-control span8','placeholder'=>'Title'));?>
-				<?php echo \Form::input('add[registerdate]',$model_utility->h($post['registerdate']), array('class' => 'form-control span8 datepicker','placeholder'=>'Date','readonly'=>'readonly'));?>
+				<?php echo \Form::input('add[post_title]',$utility->h($post['post_title']), array('class' => 'form-control span8','placeholder'=>'Title'));?>
+				<?php echo \Form::input('add[registerdate]',$utility->h($post['registerdate']), array('class' => 'form-control span8 datepicker','placeholder'=>'Date','readonly'=>'readonly'));?>
 				<?php echo \Form::textarea('add[post_message]',$post['post_message'], array('id'=>'clEditor','class' => 'form-control'));?>
 			</span>
 			<span class="span3">

@@ -3,6 +3,12 @@
 class Controller_App extends Controller_Template
 {
 
+	/**
+	 * Before action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function before()
 	{
 		parent::before();
@@ -29,7 +35,12 @@ class Controller_App extends Controller_Template
 		}
 	}
 
-
+	/**
+	 * Check login parameter
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	private function validate_login()
 	{
 		$validation = \Validation::forge();
@@ -45,6 +56,12 @@ class Controller_App extends Controller_Template
 		return $validation;
 	}
 
+	/**
+	 * Login action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_login()
 	{
 		$username = \Input::post('username', null);
@@ -71,6 +88,12 @@ class Controller_App extends Controller_Template
 		$this->template->content->set_safe('errmsg', $result_validate);
 	}
 
+	/**
+	 * Logout action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_logout()
 	{
 		\Auth::logout();

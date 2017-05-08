@@ -36,7 +36,7 @@ return array(
 	/**
 	 * DB table name for the user table
 	 */
-	'table_name' => 'tbl_user',
+	'table_name' => 'mtr_user',
 
 	/**
 	 * Choose which columns are selected, must include: username, password, email, last_login,

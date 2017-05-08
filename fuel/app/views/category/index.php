@@ -1,8 +1,4 @@
-<?php
-	include APPPATH . 'views/parts/header.php';
-	$model_main = new Model_Main();
-	$post = \Session::get_flash('post');
-?>
+<?php include APPPATH . 'views/parts/header.php';?>
 <div class="row-fluid">
 	<!-- block -->
 	<div class="block">
@@ -13,22 +9,17 @@
 			<span class="span12">
 			<?php echo \Form::open('category/add');?>
 				<?php echo \Form::hidden(\Config::get('security.csrf_token_key'), \Security::fetch_token());?>
-				<?php echo \Form::input('add[category_name]',$model_utility->h($post['category_name']), array('class' => 'form-control span8','placeholder'=>'Category Name'));?>
-				<?php echo \Form::input('add[category_slug]',$model_utility->h($post['category_slug']), array('class' => 'form-control span8','placeholder'=>'Slug Name'));?>
+				<?php echo \Form::input('add[category_name]',$utility->h($post['category_name']), array('class' => 'form-control span8','placeholder'=>'Category Name'));?>
+				<?php echo \Form::input('add[category_slug]',$utility->h($post['category_slug']), array('class' => 'form-control span8','placeholder'=>'Slug Name'));?>
 				<?php
-					/*
-					echo \Form::select('add[category_parent_id]',$model_utility->h($post['category_parent_id']),
-					$r_category_result,
-					array('type'=>'select','class' => 'form-control span8','placeholder'=>'親'));
-					*/
 					echo '<select type="select" class="form-control span8" name="add[category_parent_id]" id="form_add[category_parent_id]">';
 					foreach($r_category_result as $key => $val){
 						foreach($r_category_result[$key] as $k => $v){
 							if($k == 0){
 								$k = $key;
 							}
-							echo '<option value="'.$model_utility->h($k).'">';
-							echo $model_utility->h($v['category_name']);
+							echo '<option value="'.$utility->h($k).'">';
+							echo $utility->h($v['category_name']);
 							echo '</option>';
 						}
 					}
@@ -42,9 +33,6 @@
 	</div>
 	<!-- /block -->
 </div>
-
-
-
 
 <div class="row-fluid">
 	<!-- block -->
@@ -95,9 +83,9 @@
 							}
 							echo '<tr>';
 							echo '<td>'.$v['category_name'].'</td>';
-							echo '<td>'.$model_utility->h($v['category_description']).'</td>';
-							echo '<td>'.$model_utility->h($v['category_slug']).'</td>';
-							echo '<td><a href="'.\Uri::base().'category/preview?id='.$model_utility->h($k).'" class="btn btn-primary">Edit</a></td>';
+							echo '<td>'.$utility->h($v['category_description']).'</td>';
+							echo '<td>'.$utility->h($v['category_slug']).'</td>';
+							echo '<td><a href="'.\Uri::base().'category/preview?id='.$utility->h($k).'" class="btn btn-primary">Edit</a></td>';
 							echo '</tr>';
 						}
 					}

@@ -1,10 +1,12 @@
 <?php
 class Controller_Image extends Controller_App
 {
-	 /**
+
+	/**
+	 * Image index page
 	 *
-	 * Index Action
-	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_index()
 	{
@@ -20,30 +22,22 @@ class Controller_Image extends Controller_App
 
 	}
 
-	 /**
+	/**
+	 * Image add action
 	 *
-	 * 404 Error
-	 *
-	 */
-	public function action_404()
-	{
-		return Response::forge(Presenter::forge('main/404'), 404);
-	}
-
-	 /**
-	 *
-	 * Image Add Action
-	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_add()
 	{
 		if(Input::method() != 'POST'){
-			Response::redirect('image');
+			Response::redirect('image/index');
 		}
-		$model_utility = new Model_Utility();
+		$utility = new Utility();
+		$model_image = new Model_Image();
 		$base_path = Uri::base();
 		$path = DOCROOT.'assets/img';
-		$model_utility->make_date_dir($path);
+		$utility->make_date_dir($path);
 		$year = date('Y');
 		$month = date('m');
 		$save_path = 'files/'.$year.'/'.$month.'/';
@@ -69,7 +63,6 @@ class Controller_Image extends Controller_App
 		    }
 		    if (Upload::is_valid()){
 		        Upload::save();
-				$model_image = new Model_Image();
 				$data = $model_image->add_action(Upload::get_files(),$save_path);
 			    $result['flg'] = 0;
 			    $result['data'] = $data;
@@ -106,7 +99,6 @@ class Controller_Image extends Controller_App
         }
 		if (Upload::is_valid()){
 			Upload::save();
-			$model_image = new Model_Image();
 			$model_image->add_action(Upload::get_files(),$save_path);
 			$result_message = 'The addition of the image is completed.';
 			Session::set_flash('result_message',$result_message);
@@ -115,17 +107,17 @@ class Controller_Image extends Controller_App
 			Session::set_flash('error_message',$error_message);
 		}
 		$view = View::forge('image/index');
-		$model_image = new Model_Image();
-		$model_utility = new Model_Utility();
 		$result = $model_image->get_result();
 		$view->set('result',$result[0]);
 		$view->set('count',$result[1]);
 		return $view;
 	}
-	 /**
+
+	/**
+	 * Image delete action
 	 *
-	 * Image Delete Action
-	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_delete()
 	{
@@ -146,10 +138,12 @@ class Controller_Image extends Controller_App
 		}
 		exit();
 	}
-	 /**
-	 *
+
+	/**
 	 * Show iframe
 	 *
+	 * @access  public
+	 * @return  Response
 	 */
 	public function action_image_iframe()
 	{

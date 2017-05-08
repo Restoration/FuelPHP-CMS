@@ -14,8 +14,8 @@
 			<span class="span12">
 			<?php echo \Form::open('tag/add');?>
 				<?php echo \Form::hidden(\Config::get('security.csrf_token_key'), \Security::fetch_token());?>
-				<?php echo \Form::input('add[tag_name]',$model_utility->h($post['tag_name']), array('class' => 'form-control span8','placeholder'=>'Tag Name'));?>
-				<?php echo \Form::input('add[tag_slug]',$model_utility->h($post['tag_slug']), array('class' => 'form-control span8','placeholder'=>'Slug Name'));?>
+				<?php echo \Form::input('add[tag_name]',$utility->h($post['tag_name']), array('class' => 'form-control span8','placeholder'=>'Tag Name'));?>
+				<?php echo \Form::input('add[tag_slug]',$utility->h($post['tag_slug']), array('class' => 'form-control span8','placeholder'=>'Slug Name'));?>
 				<?php echo \Form::textarea('add[tag_description]',$post['tag_description'], array('class' => 'form-control span8','placeholder'=>'Tag Description'));?>
 				<div class="right_link"><?php echo Form::submit('add[save]','Send', array('class' => 'form-control btn btn-primary'));?></div>
 			<?php echo \Form::close();?>
@@ -68,10 +68,10 @@
 		            <tbody>
 		              <?php for($i =0; $i < count($result); $i++) : ?>
 		              <tr>
-		                <td><?php echo $model_utility->h($result[$i]['tag_name']);?></td>
-		                <td><?php echo $model_utility->h($result[$i]['tag_description']);?></td>
-		                <td><?php echo $model_utility->h($result[$i]['tag_slug']);?></td>
-		                <td><a href="<?php echo \Uri::base().'tag/preview?id='.$model_utility->h($result[$i]['tag_id']);?>" class="btn btn-primary">Edit</a></td>
+		                <td><?php echo $utility->h($result[$i]['tag_name']);?></td>
+		                <td><?php echo $utility->h($result[$i]['tag_description']);?></td>
+		                <td><?php echo $utility->h($result[$i]['tag_slug']);?></td>
+		                <td><a href="<?php echo \Uri::base().'tag/preview?id='.$utility->h($result[$i]['tag_id']);?>" class="btn btn-primary">Edit</a></td>
 		              </tr>
 		              <?php endfor;?>
 		            </tbody>

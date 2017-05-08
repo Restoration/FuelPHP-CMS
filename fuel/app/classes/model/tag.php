@@ -1,24 +1,25 @@
 <?php
 class Model_Tag extends Model_Crud{
 
-	//結果取得
+	/**
+	 * Get tag Data
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function get_result()
     {
 		$table_name = 'mtr_tag';
-
 		$count_sql = \DB::select()->from($table_name);
 		$count_sql->where('dltflg','=',0);
 		$count_result = $count_sql->execute();
 		$count = count($count_result);
-
-		//ページネーション
+		// Pagination
 		$config = array(
-			//'pagination_url' => '',
 			'total_items'    => $count,
 			'per_page'       => 10,
 			'uri_segment'    => 'page',
 		);
-		//ページャーインスタンス作成
 		$pagination = \Pagination::forge('pagination', $config);
 		$query = \DB::select()->from($table_name);
 		$query->where('dltflg','=',0);
@@ -28,7 +29,12 @@ class Model_Tag extends Model_Crud{
 		return $result;
 	}
 
-	//タグのみ取得
+	/**
+	 * Get tag data from mtr_tag
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function get_tag()
     {
 		$table_name = 'mtr_tag';
@@ -39,7 +45,13 @@ class Model_Tag extends Model_Crud{
 		return $result;
 	}
 
-	//idのリクエストがあれば結果を返す
+	/**
+	 * Request tag data from tag id
+	 *
+	 * @access  public
+	 * @params  id
+	 * @return  Response
+	 */
 	public static function preview($id){
 		$table_name = 'mtr_tag';
 		$query = \DB::select()->from($table_name);
@@ -48,8 +60,12 @@ class Model_Tag extends Model_Crud{
 		return $query->execute()->as_array();
 	}
 
-
-	//追加
+	/**
+	 * Tag insert action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function insert_action()
     {
 		$table_name = 'mtr_tag';
@@ -62,7 +78,6 @@ class Model_Tag extends Model_Crud{
 		$model_tag = new Model_Tag();
 		$count = $model_tag->validate_slug($_POST['add']['tag_slug']);
 		if($count >= 1){
-
 			$suffix = '-'.(intval($count)+1);
 			$_POST['add']['tag_slug'] = $_POST['add']['tag_slug'].$suffix;
 			$re_count = $model_tag->validate_slug($_POST['add']['tag_slug']);
@@ -83,7 +98,12 @@ class Model_Tag extends Model_Crud{
 		return $query->execute();
     }
 
-	//更新,削除
+	/**
+	 * Tag edit action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
     public static function edit_action()
     {
 		$table_name = 'mtr_tag';
@@ -95,7 +115,6 @@ class Model_Tag extends Model_Crud{
 				$_POST['edit']['tag_slug'] = $tag_name;
 			}
 			$model_tag = new Model_Tag();
-
 			$cnt = $model_tag->validate_slug($_POST['edit']['tag_slug']);
 			if($cnt == 1){
 				$count = $model_tag->validate_update_slug($_POST['edit']['tag_id'],$_POST['edit']['tag_slug']);
@@ -128,7 +147,13 @@ class Model_Tag extends Model_Crud{
 		}
     }
 
-	//検索
+	/**
+	 * Tag search for ajax
+	 *
+	 * @access  public
+	 * @params  search word
+	 * @return  Response
+	 */
     public static function tag_search_action($search_value)
     {
 		$table_name = 'mtr_tag';
@@ -136,7 +161,8 @@ class Model_Tag extends Model_Crud{
 
 		$count_sql = \DB::select()->from($table_name);
 		if(strlen($post) > 0){
-		    $post = str_replace("　", " ",$post);//全角を半角に変換
+			// Convert full-width characters to half-width characters
+		    $post = str_replace("　", " ",$post);
 		    $array = explode(" ",$post);
 		    for($i =0; $i <count($array); $i++){
 		        $count_sql->and_where('tag_name', 'LIKE',"%$array[$i]%");
@@ -145,18 +171,16 @@ class Model_Tag extends Model_Crud{
 		$count_sql->and_where('dltflg','=',0);
 		$count_result = $count_sql->execute()->as_array();
 		$count = count($count_result);
-
-		//ページネーション
 		$config = array(
 			'total_items'    => $count,
 			'per_page'       => 10,
 			'uri_segment'    => 'page',
 		);
-		//ページャーインスタンス作成
 		$pagination = \Pagination::forge('pagination', $config);
 		$query = \DB::select()->from($table_name);
 		if(strlen($post) > 0){
-		    $post = str_replace("　", " ",$post);//全角を半角に変換
+			// Convert full-width characters to half-width characters
+		    $post = str_replace("　", " ",$post);
 		    $array = explode(" ",$post);
 		    for($i =0; $i <count($array); $i++){
 		        $query->and_where('tag_name', 'LIKE',"%$array[$i]%");
@@ -170,6 +194,13 @@ class Model_Tag extends Model_Crud{
 		return $result;
     }
 
+	/**
+	 * Tag slug add validation
+	 *
+	 * @access  private
+	 * @params  url slug
+	 * @return  Response
+	 */
 	private static function validate_slug($slug)
 	{
 		$table_name = 'mtr_tag';
@@ -181,6 +212,14 @@ class Model_Tag extends Model_Crud{
 		return $count;
 	}
 
+	/**
+	 * Tag slug update validation
+	 *
+	 * @access  private
+	 * @params  tag id
+	 * @params  url slug
+	 * @return  Response
+	 */
 	private static function validate_update_slug($id,$slug)
 	{
 		$table_name = 'mtr_tag';

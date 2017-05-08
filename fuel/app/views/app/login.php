@@ -1,14 +1,14 @@
-<?php $model_utility = new Model_Utility();?>
 <div id="login">
 	<div class="form-signin">
 			<?php echo Form::open('app/login');?>
 			<h2 class="form-signin-heading">Login</h2>
 			<?php
+				$utility = new Utility();
 				$username = !empty($username)? $username : '';
 				if(!empty($errmsg)){
 				echo '<div class="alert alert-error">';
 				foreach($errmsg as $key => $val){
-					echo $model_utility->h($val).'<br />';
+					echo $utility->h($val).'<br />';
 				}
 				echo '</div>';
 			}

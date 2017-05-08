@@ -9,17 +9,20 @@ class Controller_Repass extends Controller_App
 	 * @access  public
 	 * @return  Response
 	 */
-	public function action_index(){
+	public function action_index()
+	{
 		$this->template->title = 'Reset Password';
 		$this->template->content = \View::forge('repass/index');
 	}
+
 	/**
 	 * Reset Password request complete
 	 *
 	 * @access  public
 	 * @return  Response
 	 */
-	public function action_complete(){
+	public function action_complete()
+	{
 		if(\Input::method() == 'POST'){
 			$post = $_POST['repass'];
 			$username = $post['username'];
@@ -56,6 +59,7 @@ class Controller_Repass extends Controller_App
 			\Response::redirect('repass/index', 'refresh');
 		}
 	}
+
 	/**
 	 * Reset Password Page
 	 *
@@ -63,8 +67,8 @@ class Controller_Repass extends Controller_App
 	 * @return  Response
 	 */
 	//
-	public static function action_repass($onepass){
-
+	public static function action_repass($onepass)
+	{
 		if(\Input::method() == 'POST'){
 			$post = $_POST['repass'];
 			$password = $post['password'];
@@ -124,6 +128,7 @@ class Controller_Repass extends Controller_App
 		$errors = !$validate->run($post) ? $validate->error() : array();
 		return $errors;
 	}
+
 	/**
 	 * Reset Password process validation
 	 *

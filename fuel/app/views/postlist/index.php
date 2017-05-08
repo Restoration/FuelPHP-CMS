@@ -1,7 +1,4 @@
-<?php
-	include APPPATH . 'views/parts/header.php';
-	$model_main = new Model_Main();
-?>
+<?php include APPPATH . 'views/parts/header.php';?>
 <div class="row-fluid">
 	<!-- block -->
 	<div class="block">
@@ -21,8 +18,6 @@
 	</div>
 	<!-- /block -->
 </div>
-
-
 
 <div class="row-fluid">
 	<!-- block -->
@@ -46,9 +41,9 @@
 		            <tbody>
 		              <?php for($i =0; $i < count($result); $i++) : ?>
 		              <tr>
-		                <td><?php echo $model_utility->h(str_replace('-','/',substr($result[$i]['registerdate'],0,10)));?></td>
-		                <td><?php echo $model_utility->h($result[$i]['post_title']);?></td>
-		                <td><a href="<?php echo \Uri::base().'postlist/preview?id='.$model_utility->h($result[$i]['post_id']);?>" class="btn btn-primary">Edit</a></td>
+		                <td><?php echo $utility->h(str_replace('-','/',substr($result[$i]['registerdate'],0,10)));?></td>
+		                <td><?php echo $utility->h($result[$i]['post_title']);?></td>
+		                <td><a href="<?php echo \Uri::base().'postlist/preview?id='.$utility->h($result[$i]['post_id']);?>" class="btn btn-primary">Edit</a></td>
 		              </tr>
 		              <?php endfor;?>
 		            </tbody>

@@ -1,7 +1,3 @@
-
-<?php
-	$model_utility = new Model_Utility();
-?>
 <div id="login">
 	<div class="form-signin">
 	    <h2 class="form-signin-heading">Reset password</h2>

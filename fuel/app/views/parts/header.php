@@ -1,5 +1,6 @@
 <?php
-	$model_utility = new Model_Utility();
+	$utility = new Utility();
+	$post = \Session::get_flash('post');
 ?>
 <!DOCTYPE html>
 <html class="no-js">
@@ -23,8 +24,8 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 </head>
-<body data-controller="<?php echo $model_utility->h(Request::main()->controller);?>">
-<?php echo Form::input('base_url',$model_utility->h(Uri::base()),array('type'=>'hidden','id'=>'base_url'));?>
+<body data-controller="<?php echo $utility->h(Request::main()->controller);?>">
+<?php echo Form::input('base_url',$utility->h(Uri::base()),array('type'=>'hidden','id'=>'base_url'));?>
 <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container-fluid">

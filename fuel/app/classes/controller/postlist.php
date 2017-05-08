@@ -1,6 +1,13 @@
 <?php
 class Controller_Postlist extends Controller_App
 {
+
+	/**
+	 * Post list page
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_index()
 	{
 		if (!\Auth::check()){
@@ -11,17 +18,20 @@ class Controller_Postlist extends Controller_App
 		$result = $model_postlist->get_result();
 		$view->set('result',$result);
 		return $view;
+	}
 
-	}
-	//404エラー
-	public function action_404()
-	{
-		return \Response::forge(\Presenter::forge('main/404'), 404);
-	}
-	//編集画面表示
+	/**
+	 * Previwe post detail page
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_preview()
 	{
-		$id = $_GET['id'];
+		$id = \Input::get('id');
+		if(\Input::method() != 'GET' || !$id){
+				\Response::redirect('postlist/index', 'refresh');
+		}
 		$view = \View::forge('postlist/preview');
 		$model_utility = new Model_Utility();
 		$model_tag = new Model_Tag();
@@ -29,12 +39,18 @@ class Controller_Postlist extends Controller_App
 		$preview = $model_utility->preview($id);
 		$tag_result = $model_tag->get_tag();
 		$category_result = $model_category->get_category();
+		$view->set('id',$id);
 		$view->set('result',$preview);
 		$view->set('tag_result',$tag_result);
 		$view->set('category_result',$category_result);
 		return $view;
 	}
-	//編集,削除アクション
+	/**
+	 * Update post action
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_edit()
 	{
 		if(\Input::method() == 'POST'){
@@ -76,6 +92,12 @@ class Controller_Postlist extends Controller_App
 		}
 	}
 
+	/**
+	 * Search post from search word
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_post_search()
 	{
 		if($_POST['action'] == 'ajaxPostSearch'){
@@ -90,12 +112,17 @@ class Controller_Postlist extends Controller_App
 		}
 	}
 
+	/**
+	 * Post category search fro Ajax
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
 	public function action_post_category_search()
 	{
 		if($_POST['action'] == 'ajaxPostCategorySearch'){
 			$model_category = new Model_Category();
 			$category_result = $model_category->get_category();
-
 			$r_category_result = array();
 			$r_category_result['-1'][0]['category_name'] = 'No parent category';
 			$r_category_result['-1'][0]['category_description'] = 'No';
@@ -130,7 +157,6 @@ class Controller_Postlist extends Controller_App
 			foreach($r_category_result as $key => $val){
 				ksort($r_category_result[$key]);
 			}
-
 			echo json_encode($r_category_result,JSON_PRETTY_PRINT);
 			exit();
 		} else {
@@ -138,9 +164,5 @@ class Controller_Postlist extends Controller_App
 			exit();
 		}
 	}
-
-
-
-
 }
 ?>

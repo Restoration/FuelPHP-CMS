@@ -11,14 +11,14 @@
 	}
 if(!empty($result_message) || !empty($error_message)):?>
 <div class="row-fluid">
-    <div class="alert alert-<?php echo $model_utility->h($result_string);?>">
+    <div class="alert alert-<?php echo $utility->h($result_string);?>">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
-        <h4><?php echo $model_utility->h(ucfirst($result_string));?></h4><?php echo $model_utility->h($alert_message);?>
+        <h4><?php echo $utility->h(ucfirst($result_string));?></h4><?php echo $utility->h($alert_message);?>
 	    <?php
 		if(!empty($errors)){
 			echo '<p>';
 	        foreach ($errors as $error){
-	            echo $model_utility->h($error).'<br />';
+	            echo $utility->h($error).'<br />';
 	        }
 	        echo '</p>';
 	    }

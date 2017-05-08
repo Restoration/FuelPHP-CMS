@@ -1,8 +1,4 @@
-<?php
-	include APPPATH . 'views/parts/header.php';
-	$model_main = new Model_Main();
-	$post = \Session::get_flash('post');
-?>
+<?php include APPPATH . 'views/parts/header.php';?>
 <div class="row-fluid">
 	<!-- block -->
 	<div class="block">
@@ -13,9 +9,9 @@
 			<span class="span12">
 			<?php echo \Form::open('category/edit');?>
 				<?php echo \Form::hidden(\Config::get('security.csrf_token_key'), \Security::fetch_token());?>
-				<?php echo \Form::hidden('edit[category_id]',$model_main->h($id));?>
-				<?php echo \Form::input('edit[category_name]',$model_utility->h($result[0]['category_name']), array('class' => 'form-control span8','placeholder'=>'Category Name'));?>
-				<?php echo \Form::input('edit[category_slug]',$model_utility->h($result[0]['category_slug']), array('class' => 'form-control span8','placeholder'=>'Slug Name'));?>
+				<?php echo \Form::hidden('edit[category_id]',$utility->h($id));?>
+				<?php echo \Form::input('edit[category_name]',$utility->h($result[0]['category_name']), array('class' => 'form-control span8','placeholder'=>'Category Name'));?>
+				<?php echo \Form::input('edit[category_slug]',$utility->h($result[0]['category_slug']), array('class' => 'form-control span8','placeholder'=>'Slug Name'));?>
 				<?php
 					echo '<select type="select" class="form-control span8" name="edit[category_parent_id]" id="form_add[category_parent_id]">';
 					foreach($r_category_result as $key => $val){
@@ -29,8 +25,8 @@
 							}elseif($result[0]['category_parent_id'] == $k){
 								$selected = 'selected';
 							}
-							echo '<option value="'.$model_utility->h($k).'" '.$selected.'>';
-							echo $model_utility->h($v['category_name']);
+							echo '<option value="'.$utility->h($k).'" '.$selected.'>';
+							echo $utility->h($v['category_name']);
 							echo '</option>';
 						}
 					}
@@ -46,5 +42,4 @@
 	</div>
 	<!-- /block -->
 </div>
-
 <?php include APPPATH . 'views/parts/footer.php';?>
