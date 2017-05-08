@@ -1,4 +1,4 @@
-FuelCMS
+FuelPHP-CMS
 ====
 ## Overview
 FuelCMS is content management system, can use simple blog system.
@@ -6,29 +6,43 @@ FuelCMS is content management system, can use simple blog system.
 ## Description
 FuelCMS developed by PHP FrameWork [FuelPHP](https://fuelphp.com/).
 This application is simple blog system. A basic system is prepared. 
-Posting,category,tag,media,login.
+Posting,category,tag,media,login,etc...
 This system to update a small site.
+
+=== SystemList ===
+* Post
+* Category/Tag
+* Media
+* Calendar
+* Login/Logout
 
 ## Demo
 
-## Feature
-Modeling by [WordPress](https://wordpress.org/).
-
 ## Install
 
-install uses composer  
+install
 ```
 
 ```
 
+## Copyright
 
-## Contribution
+FuelPHP Copyright v1.8.0 Copyright 2016 Fuel Development Team
+Licenses: MIT  
+Source: http://fuelphp.com
 
-1. Fork it
-1. Create your feature branch (git checkout -b my-new-feature)
-1. Commit your changes (git commit -am 'Add some feature')
-1. Push to the branch (git push origin my-new-feature)
-1. Create new Pull Request
+HTML5 Shiv v3.7.0, Copyright 2014 Alexander Farkas  
+Licenses: MIT/GPL2  
+Source: https://github.com/aFarkas/html5shiv  
+
+FullCalendar v2.7.3, Copyright 2016 Adam Shaw  
+Licenses: MIT  
+Source: http://fullcalendar.io/  
+
+Lightbox v2.7.1 Copyright 2015 Lokesh Dhakar  
+Licenses: MIT  
+Source: http://lokeshdhakar.com/projects/lightbox2/  
+
 
 ## Licence
 
