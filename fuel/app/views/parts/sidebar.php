@@ -6,6 +6,7 @@
 	<li> <?php echo Html::anchor('image', '<i class="icon-chevron-right"></i> Image');?> </li>
 	<li> <?php echo Html::anchor('calendar', '<i class="icon-chevron-right"></i> Calendar');?> </li>
 	<li> <?php echo Html::anchor('markdown', '<i class="icon-chevron-right"></i> MarkDown');?> </li>
+	<li> <?php echo Html::anchor('task', '<i class="icon-chevron-right"></i> Task');?> </li>
 	<li> <?php echo Html::anchor('user', '<i class="icon-chevron-right"></i> Users');?> </li>
 	<li> <?php echo Html::anchor('app/logout', '<i class="icon-chevron-right"></i> Logout');?> </li>
 </ul>
