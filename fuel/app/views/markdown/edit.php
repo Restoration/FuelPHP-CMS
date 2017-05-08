@@ -11,20 +11,19 @@
 					<?php echo \Form::hidden(\Config::get('security.csrf_token_key'), \Security::fetch_token());?>
 					<?php echo Form::hidden('edit[id]',$result['id']);?>
 					<?php echo \Form::input('edit[title]',$result['title'],array('class' => 'form-control span8','placeholder'=>'File Name'));?>
-				</span>
 				<div>
 					<span class="span6">
 						<?php echo \Form::textarea('edit[text]',$result['text'],array('class' => 'form-control', 'id' => 'editor'));?>
-						<div class="right_link">
-							<?php echo Form::submit('edit[save]','Download', array('class' => 'form-control btn btn-success'));?>
-							<?php echo Form::submit('edit[save]','Save', array('class' => 'form-control btn btn-primary'));?>
-							<?php echo Form::submit('edit[delete]','Delete', array('class' => 'form-control btn btn-danger'));?>
-						</div>
 					</span>
 					<span class="span6">
 						<div id="result_wrap"><div id="result"></div>
 						<?php echo Form::hidden('edit[content]','',array('id'=>'hidden_result'));?>
 					</span>
+				</div>
+				<div class="right_link">
+					<?php echo Form::submit('edit[save]','Download', array('class' => 'form-control btn btn-success'));?>
+					<?php echo Form::submit('edit[save]','Save', array('class' => 'form-control btn btn-primary'));?>
+					<?php echo Form::submit('edit[delete]','Delete', array('class' => 'form-control btn btn-danger'));?>
 				</div>
 				<?php echo \Form::close();?>
 			</span>
