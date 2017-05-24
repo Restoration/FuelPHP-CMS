@@ -26,10 +26,6 @@ install
 ```
 
 ## Copyright
-FuelPHP Copyright v1.8.0, Copyright 2016 Fuel Development Team  
-Licenses: MIT  
-Source: http://fuelphp.com  
-
 HTML5 Shiv v3.7.0, Copyright 2014 Alexander Farkas  
 Licenses: MIT/GPL2  
 Source: https://github.com/aFarkas/html5shiv  
