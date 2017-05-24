@@ -17,10 +17,13 @@ This system to update a small site.
 * Login/Logout
 
 ## Copyright
+<<<<<<< HEAD
 FuelPHP Copyright v1.8.0, Copyright 2016 Fuel Development Team  
 Licenses: MIT  
 Source: http://fuelphp.com  
 
+=======
+>>>>>>> RSS
 HTML5 Shiv v3.7.0, Copyright 2014 Alexander Farkas  
 Licenses: MIT/GPL2  
 Source: https://github.com/aFarkas/html5shiv  
@@ -36,11 +39,19 @@ Source: http://lokeshdhakar.com/projects/lightbox2/
 marked v0.3.6 Copyright 2014, Christopher Jeffrey  
 Licenses: MIT  
 Source: https://github.com/chjj/marked  
+<<<<<<< HEAD
 
 Underscore.js v1.8.3, Copyright 2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors  
 Licenses: MIT  
 Source: http://underscorejs.org  
 
+=======
+
+Underscore.js v1.8.3, Copyright 2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors  
+Licenses: MIT  
+Source: http://underscorejs.org  
+
+>>>>>>> RSS
 Backbone.js v1.3.3 Copyright 2017 Jordan Eldredge  
 Licenses: MIT  
 Source: http://backbonejs.org  
