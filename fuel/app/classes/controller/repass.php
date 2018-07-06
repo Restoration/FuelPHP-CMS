@@ -42,7 +42,8 @@ class Controller_Repass extends Controller_App
 				$sendmail->to($email,$username);
 				$sendmail->subject('Password recurrence procedure accepted');
 				$sendmail->html_body($body);
-
+				$result_message = 'Sent a mail for reissue.';
+				\Session::set_flash('result_message',$result_message);
 				if($sendmail->send()){
 					$this->template->title = 'Reset Password';
 					$this->template->content = \View::forge('repass/complete');

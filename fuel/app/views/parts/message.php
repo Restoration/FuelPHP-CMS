@@ -1,4 +1,5 @@
 <?php
+	$utility = new Utility();
 	$result_message = \Session::get_flash('result_message');
 	$error_message = \Session::get_flash('error_message');
 	$errors = \Session::get_flash('errors');

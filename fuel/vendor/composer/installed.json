@@ -1,114 +1,5 @@
 [
     {
-        "name": "composer/installers",
-        "version": "v1.2.0",
-        "version_normalized": "1.2.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/composer/installers.git",
-            "reference": "d78064c68299743e0161004f2de3a0204e33b804"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/d78064c68299743e0161004f2de3a0204e33b804",
-            "reference": "d78064c68299743e0161004f2de3a0204e33b804",
-            "shasum": ""
-        },
-        "require": {
-            "composer-plugin-api": "^1.0"
-        },
-        "replace": {
-            "roundcube/plugin-installer": "*",
-            "shama/baton": "*"
-        },
-        "require-dev": {
-            "composer/composer": "1.0.*@dev",
-            "phpunit/phpunit": "4.1.*"
-        },
-        "time": "2016-08-13 20:53:52",
-        "type": "composer-plugin",
-        "extra": {
-            "class": "Composer\\Installers\\Plugin",
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Composer\\Installers\\": "src/Composer/Installers"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Kyle Robinson Young",
-                "email": "kyle@dontkry.com",
-                "homepage": "https://github.com/shama"
-            }
-        ],
-        "description": "A multi-framework Composer library installer",
-        "homepage": "https://composer.github.io/installers/",
-        "keywords": [
-            "Craft",
-            "Dolibarr",
-            "Hurad",
-            "ImageCMS",
-            "MODX Evo",
-            "Mautic",
-            "OXID",
-            "Plentymarkets",
-            "RadPHP",
-            "SMF",
-            "Thelia",
-            "WolfCMS",
-            "agl",
-            "aimeos",
-            "annotatecms",
-            "attogram",
-            "bitrix",
-            "cakephp",
-            "chef",
-            "cockpit",
-            "codeigniter",
-            "concrete5",
-            "croogo",
-            "dokuwiki",
-            "drupal",
-            "elgg",
-            "expressionengine",
-            "fuelphp",
-            "grav",
-            "installer",
-            "joomla",
-            "kohana",
-            "laravel",
-            "lithium",
-            "magento",
-            "mako",
-            "mediawiki",
-            "modulework",
-            "moodle",
-            "phpbb",
-            "piwik",
-            "ppi",
-            "puppet",
-            "reindex",
-            "roundcube",
-            "shopware",
-            "silverstripe",
-            "symfony",
-            "typo3",
-            "wordpress",
-            "yawik",
-            "zend",
-            "zikula"
-        ]
-    },
-    {
         "name": "fuelphp/upload",
         "version": "2.0.6",
         "version_normalized": "2.0.6.0",
@@ -130,7 +21,7 @@
         "require-dev": {
             "codeception/codeception": "~2.0"
         },
-        "time": "2015-11-04 17:19:56",
+        "time": "2015-11-04T17:19:56+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -178,7 +69,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-29 18:58:20",
+        "time": "2016-10-29T18:58:20+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -231,7 +122,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-10 12:19:37",
+        "time": "2016-10-10T12:19:37+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -310,7 +201,7 @@
             "rollbar/rollbar": "Allow sending log messages to Rollbar",
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
         },
-        "time": "2016-04-02 13:12:58",
+        "time": "2016-04-02T13:12:58+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -373,7 +264,7 @@
             "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 5.0.0."
         },
-        "time": "2015-08-04 04:48:03",
+        "time": "2015-08-04T04:48:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -453,7 +344,7 @@
             "monolog/monolog": "1.18.*",
             "phpseclib/phpseclib": "2.0.0"
         },
-        "time": "2017-01-15 17:41:18",
+        "time": "2017-01-15T17:41:18+00:00",
         "type": "fuel-package",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -487,7 +378,7 @@
         "require": {
             "composer/installers": "~1.0"
         },
-        "time": "2016-10-20 18:12:06",
+        "time": "2016-10-20T18:12:06+00:00",
         "type": "fuel-package",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -521,7 +412,7 @@
         "require": {
             "composer/installers": "~1.0"
         },
-        "time": "2016-10-04 15:21:48",
+        "time": "2016-10-04T15:21:48+00:00",
         "type": "fuel-package",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -555,7 +446,7 @@
         "require": {
             "composer/installers": "~1.0"
         },
-        "time": "2016-10-05 13:32:41",
+        "time": "2016-10-05T13:32:41+00:00",
         "type": "fuel-package",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -589,7 +480,7 @@
         "require": {
             "composer/installers": "~1.0"
         },
-        "time": "2016-05-22 14:52:35",
+        "time": "2016-05-22T14:52:35+00:00",
         "type": "fuel-package",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -623,7 +514,7 @@
         "require": {
             "composer/installers": "~1.0"
         },
-        "time": "2017-01-12 17:26:53",
+        "time": "2017-01-12T17:26:53+00:00",
         "type": "fuel-package",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -638,6 +529,122 @@
         ],
         "description": "FuelPHP 1.x Parser Package",
         "homepage": "https://github.com/fuel/parser"
+    },
+    {
+        "name": "composer/installers",
+        "version": "v1.3.0",
+        "version_normalized": "1.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/composer/installers.git",
+            "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/composer/installers/zipball/79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+            "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "^1.0"
+        },
+        "replace": {
+            "roundcube/plugin-installer": "*",
+            "shama/baton": "*"
+        },
+        "require-dev": {
+            "composer/composer": "1.0.*@dev",
+            "phpunit/phpunit": "4.1.*"
+        },
+        "time": "2017-04-24T06:37:16+00:00",
+        "type": "composer-plugin",
+        "extra": {
+            "class": "Composer\\Installers\\Plugin",
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Composer\\Installers\\": "src/Composer/Installers"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kyle Robinson Young",
+                "email": "kyle@dontkry.com",
+                "homepage": "https://github.com/shama"
+            }
+        ],
+        "description": "A multi-framework Composer library installer",
+        "homepage": "https://composer.github.io/installers/",
+        "keywords": [
+            "Craft",
+            "Dolibarr",
+            "Eliasis",
+            "Hurad",
+            "ImageCMS",
+            "Kanboard",
+            "MODX Evo",
+            "Mautic",
+            "Maya",
+            "OXID",
+            "Plentymarkets",
+            "Porto",
+            "RadPHP",
+            "SMF",
+            "Thelia",
+            "WolfCMS",
+            "agl",
+            "aimeos",
+            "annotatecms",
+            "attogram",
+            "bitrix",
+            "cakephp",
+            "chef",
+            "cockpit",
+            "codeigniter",
+            "concrete5",
+            "croogo",
+            "dokuwiki",
+            "drupal",
+            "elgg",
+            "expressionengine",
+            "fuelphp",
+            "grav",
+            "installer",
+            "itop",
+            "joomla",
+            "kohana",
+            "laravel",
+            "lavalite",
+            "lithium",
+            "magento",
+            "mako",
+            "mediawiki",
+            "modulework",
+            "moodle",
+            "phpbb",
+            "piwik",
+            "ppi",
+            "puppet",
+            "reindex",
+            "roundcube",
+            "shopware",
+            "silverstripe",
+            "sydes",
+            "symfony",
+            "typo3",
+            "wordpress",
+            "yawik",
+            "zend",
+            "zikula"
+        ]
     },
     {
         "name": "fuel/docs",
@@ -657,7 +664,7 @@
         "require": {
             "composer/installers": "~1.0"
         },
-        "time": "2017-01-15 17:46:37",
+        "time": "2017-01-15T17:46:37+00:00",
         "type": "fuel-package",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",

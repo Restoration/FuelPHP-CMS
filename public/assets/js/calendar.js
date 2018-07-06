@@ -1,9 +1,8 @@
 
 $(document).ready(function() {
-	//グローバルオブジェクト定義
+
 	var G = new Object();
 
-    // Documentの読み込みが完了するまで待機し、カレンダーを初期化します。
     $('#calendar').fullCalendar({
 	    lang: 'ja',
         // ヘッダーのタイトルとボタン
@@ -152,7 +151,7 @@ $(document).ready(function() {
     // カレンダーを破棄（イベントハンドラや内部データも破棄する）
     //$('#calendar').fullCalendar('destroy')
 
-	//モーダルウィンドウ作成
+	//Show modal window
 	jQuery.fn.center = function () {
 		this.css("position","absolute");
 		this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
@@ -217,7 +216,8 @@ $(document).ready(function() {
 		$('#calendar').fullCalendar('unselect');
 		hideModal();
 	}
-	//イベントの紐付け
+
+	//String with event
 	$(document).on('click','#eventAdd,#eventEdit,#eventDelete',eventAction);
 
 });

@@ -4,21 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "78b9bbd7cf50ab0b66bd5bebe9cde9b9",
     "content-hash": "745358609e51638f9853f5e2cbbeb4a3",
     "packages": [
         {
             "name": "composer/installers",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "d78064c68299743e0161004f2de3a0204e33b804"
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/d78064c68299743e0161004f2de3a0204e33b804",
-                "reference": "d78064c68299743e0161004f2de3a0204e33b804",
+                "url": "https://api.github.com/repos/composer/installers/zipball/79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045",
                 "shasum": ""
             },
             "require": {
@@ -60,12 +59,16 @@
             "keywords": [
                 "Craft",
                 "Dolibarr",
+                "Eliasis",
                 "Hurad",
                 "ImageCMS",
+                "Kanboard",
                 "MODX Evo",
                 "Mautic",
+                "Maya",
                 "OXID",
                 "Plentymarkets",
+                "Porto",
                 "RadPHP",
                 "SMF",
                 "Thelia",
@@ -88,9 +91,11 @@
                 "fuelphp",
                 "grav",
                 "installer",
+                "itop",
                 "joomla",
                 "kohana",
                 "laravel",
+                "lavalite",
                 "lithium",
                 "magento",
                 "mako",
@@ -105,6 +110,7 @@
                 "roundcube",
                 "shopware",
                 "silverstripe",
+                "sydes",
                 "symfony",
                 "typo3",
                 "wordpress",
@@ -112,7 +118,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-08-13 20:53:52"
+            "time": "2017-04-24T06:37:16+00:00"
         },
         {
             "name": "fuel/auth",
@@ -144,7 +150,7 @@
             ],
             "description": "FuelPHP 1.x Auth Package",
             "homepage": "https://github.com/fuel/auth",
-            "time": "2016-10-20 18:12:06"
+            "time": "2016-10-20T18:12:06+00:00"
         },
         {
             "name": "fuel/core",
@@ -179,7 +185,7 @@
             ],
             "description": "FuelPHP 1.x Core",
             "homepage": "https://github.com/fuel/core",
-            "time": "2017-01-15 17:41:18"
+            "time": "2017-01-15T17:41:18+00:00"
         },
         {
             "name": "fuel/email",
@@ -211,7 +217,7 @@
             ],
             "description": "FuelPHP 1.x Email Package",
             "homepage": "https://github.com/fuel/email",
-            "time": "2016-10-04 15:21:48"
+            "time": "2016-10-04T15:21:48+00:00"
         },
         {
             "name": "fuel/oil",
@@ -243,7 +249,7 @@
             ],
             "description": "FuelPHP 1.x Oil Package",
             "homepage": "https://github.com/fuel/oil",
-            "time": "2016-10-05 13:32:41"
+            "time": "2016-10-05T13:32:41+00:00"
         },
         {
             "name": "fuel/orm",
@@ -275,7 +281,7 @@
             ],
             "description": "FuelPHP 1.x ORM Package",
             "homepage": "https://github.com/fuel/orm",
-            "time": "2016-05-22 14:52:35"
+            "time": "2016-05-22T14:52:35+00:00"
         },
         {
             "name": "fuel/parser",
@@ -307,7 +313,7 @@
             ],
             "description": "FuelPHP 1.x Parser Package",
             "homepage": "https://github.com/fuel/parser",
-            "time": "2017-01-12 17:26:53"
+            "time": "2017-01-12T17:26:53+00:00"
         },
         {
             "name": "fuelphp/upload",
@@ -357,7 +363,7 @@
                 "file uploads",
                 "upload"
             ],
-            "time": "2015-11-04 17:19:56"
+            "time": "2015-11-04T17:19:56+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -408,7 +414,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2016-10-29 18:58:20"
+            "time": "2016-10-29T18:58:20+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -486,7 +492,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-04-02 13:12:58"
+            "time": "2016-04-02T13:12:58+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -574,7 +580,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2015-08-04 04:48:03"
+            "time": "2015-08-04T04:48:03+00:00"
         },
         {
             "name": "psr/log",
@@ -621,7 +627,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         }
     ],
     "packages-dev": [
@@ -655,7 +661,7 @@
             ],
             "description": "FuelPHP 1.x Documenataion",
             "homepage": "https://github.com/fuel/docs",
-            "time": "2017-01-15 17:46:37"
+            "time": "2017-01-15T17:46:37+00:00"
         }
     ],
     "aliases": [],

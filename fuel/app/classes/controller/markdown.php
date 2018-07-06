@@ -28,6 +28,9 @@ class Controller_Markdown extends Controller_App
 	 */
 	public function action_edit()
 	{
+		if (!\Auth::check()){
+			\Response::redirect('app/login');
+		}
 		$view = \View::forge('markdown/edit');
 		$id = \Input::get('id');
 		$result = array(

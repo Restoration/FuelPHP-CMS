@@ -1,3 +1,7 @@
+<?php
+	$utility = new Utility();
+	$post = \Session::get_flash('post');
+?>
 <!DOCTYPE html>
 <html>
 <head>
