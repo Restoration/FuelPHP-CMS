@@ -6,6 +6,7 @@
  */
 
 use phpseclib\File\X509;
+use phpseclib\Crypt\RSA;
 
 class Unit_File_X509_CSRTest extends PhpseclibTestCase
 {
@@ -67,5 +68,54 @@ draiRBZruwMPwPIP
         $csr = $x509->loadCSR($test);
 
         $this->assertInternalType('array', $csr);
+    }
+
+    public function testCSRDER()
+    {
+        $csr = 'MIICdzCCAV8CAQEwDDEKMAgGA1UEAwwBeDCCASIwDQYJKoZIhvcNAQEBBQADggEP' .
+               'ADCCAQoCggEBALtcrFDD2AHe3x2bR00wPDsPH6FJLxr5uc1ybb+ldDB5xNVImC8P' .
+               'LU6VXDZ5z68KjSovs1q0OWJWfCjlAuGLzqO35s86LI1CFuTFdkScVHMwh8zUVFoP' .
+               'pG7/9rKaNxCgaHs4evxjxQP2+Ny7tBqPLb/KV0exm6Twocf963jC/Tyn57G5erRf' .
+               'zpFrfK7DozhxY7znumJ4FuSn0TVkD6PPwZFn9VoTjv2ZoJmacGK+0r5yNKG799F5' .
+               'K8EgDrOCfbzCZjX6GJctyn2SNPTeBuXS9piH21FGnJAryv80zG+zUqFdEyoLUGJt' .
+               '4Vy6+tDP9cW68fiwTZS1Oc1VeFdL1G/CrjkCAwEAAaAmMCQGCSqGSIb3DQEJDjEX' .
+               'MBUwEwYKKwYBBAGCqlsBCQQFMAOCAQEwDQYJKoZIhvcNAQELBQADggEBAF4XOd+1' .
+               'jkJOYRInNpHfhzSD/ktDY50gpLPuDvl4f/ZBlKrb1eDYQG5F3bnYzoZWHN4n+6Zs' .
+               'CkljXs5ZPUZ5LuVpASumoG/aHXGz8c8NC3asJ1V73ljEPAfIXwqoIUoaP9jLL+Ee' .
+               'zy/ZCi2NKWVo2D7ocnn79oblAem9ksSeQl4z3Gvhuug6MsMqn96NU/ZY/vjYzAjb' .
+               'MAvJIVRY0rbCxbFa0K+XNJtF7GLyBxyPNFWCvADhvm9C4uPmoypYg7MY6EewJInN' .
+               'xzMH7I4xDLjNu0VBa6lAxTvflp0joQHKlTYX0SDIKPbQivjZMuObPuxDtkVZ0rQl' .
+               'AjmgMowaN5otTXM=';
+        $csr = base64_decode($csr);
+
+        $x509 = new X509();
+
+        $csr = $x509->loadCSR($csr);
+
+        $this->assertInternalType('array', $csr);
+    }
+
+    // on PHP 7.1, with older versions of phpseclib, this would produce a "A non-numeric value encountered" warning
+    public function testNewCSR()
+    {
+        $rsa = new RSA();
+        $x509 = new X509();
+
+        $rsa->loadKey('-----BEGIN RSA PRIVATE KEY-----
+MIICXAIBAAKBgQCqGKukO1De7zhZj6+H0qtjTkVxwTCpvKe4eCZ0FPqri0cb2JZfXJ/DgYSF6vUp
+wmJG8wVQZKjeGcjDOL5UlsuusFncCzWBQ7RKNUSesmQRMSGkVb1/3j+skZ6UtW+5u09lHNsj6tQ5
+1s1SPrCBkedbNf0Tp0GbMJDyR4e9T04ZZwIDAQABAoGAFijko56+qGyN8M0RVyaRAXz++xTqHBLh
+3tx4VgMtrQ+WEgCjhoTwo23KMBAuJGSYnRmoBZM3lMfTKevIkAidPExvYCdm5dYq3XToLkkLv5L2
+pIIVOFMDG+KESnAFV7l2c+cnzRMW0+b6f8mR1CJzZuxVLL6Q02fvLi55/mbSYxECQQDeAw6fiIQX
+GukBI4eMZZt4nscy2o12KyYner3VpoeE+Np2q+Z3pvAMd/aNzQ/W9WaI+NRfcxUJrmfPwIGm63il
+AkEAxCL5HQb2bQr4ByorcMWm/hEP2MZzROV73yF41hPsRC9m66KrheO9HPTJuo3/9s5p+sqGxOlF
+L0NDt4SkosjgGwJAFklyR1uZ/wPJjj611cdBcztlPdqoxssQGnh85BzCj/u3WqBpE2vjvyyvyI5k
+X6zk7S0ljKtt2jny2+00VsBerQJBAJGC1Mg5Oydo5NwD6BiROrPxGo2bpTbu/fhrT8ebHkTz2epl
+U9VQQSQzY1oZMVX8i1m5WUTLPz2yLJIBQVdXqhMCQBGoiuSoSjafUhV7i1cEGpb88h5NBYZzWXGZ
+37sJ5QsW+sJyoNde3xH8vdXhzU7eT82D6X/scw9RZz+/6rCJ4p0=
+-----END RSA PRIVATE KEY-----');
+        $x509->setPrivateKey($rsa);
+        $x509->setDN(array('cn' => 'website.com'));
+        $x509->saveCSR($x509->signCSR('sha256WithRSAEncryption'), X509::FORMAT_DER);
     }
 }

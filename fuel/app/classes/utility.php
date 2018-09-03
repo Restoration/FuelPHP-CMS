@@ -29,12 +29,15 @@ class Utility {
 		if(!is_dir($dir)){
 			mkdir($dir);
 		}
+		$_dir = '';
 		$date_array = array(date('Y'),date('m'));
 		for($i=0; $i < count($date_array); $i++){
 			$this->make_dir($dir,$date_array[$i]);
 			$dir .= '/'.$date_array[$i];
+			$_dir .= '/'.$date_array[$i];
 		}
-		return true;
+		$_dir .= '/';
+		return $_dir;
 	}
 	/**
 	 * Create directory

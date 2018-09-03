@@ -1,12 +1,12 @@
 <?php
 /**
- * Part of the Fuel framework.
+ * Fuel is a fast, lightweight, community driven PHP 5.4+ framework.
  *
  * @package    Fuel
- * @version    1.8
+ * @version    1.8.1
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2016 Fuel Development Team
+ * @copyright  2010 - 2018 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
@@ -129,9 +129,16 @@ class Unzip
 				continue;
 			}
 
-			$file_locations[] = $file_location = $this->_target_dir . '/' . ($preserve_filepath ? $file : basename($file));
-
-			$this->_extract_file($file, $file_location);
+			$file_location = realpath($this->_target_dir . '/' . ($preserve_filepath ? $file : basename($file)));
+			if ($file_location and strpos($file_location, $this->_target_dir) === 0)
+			{
+				$file_locations[] = $file_location;
+				$this->_extract_file($file, $file_location);
+			}
+			else
+			{
+				throw new \FuelException('ZIP file attempted to use the zip-slip-vulnerability. Extraction aborted.');
+			}
 		}
 
 		return $file_locations;

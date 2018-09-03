@@ -127,9 +127,8 @@ $(document).ready(function(){
 				return_array = $.parseJSON(res);
 				resultFlg = return_array.flg;
 				result = return_array.data;
-
 				if(resultFlg !==  1){
-					//現在表示されているrow-fluid padd-bottomを削除
+					// Delete currently displayed "row-fluid padd-bottom"
 					$('div.image_area').unwrap();
 					var resultString = 'success';
 					var alertMessage = 'Upload Successful';
@@ -146,7 +145,7 @@ $(document).ready(function(){
 						$('#imageCount span').text(imageCount);
 					}
 					$('.image_area').eq(0).before(imageEl);
-					//再びrow-fluid padd-bottomで囲む
+					// Wrap again row-fluid padd-bottom
 					do {
 						$("div#image_wrap").children("div.image_area:lt(4)").wrapAll('<div class="row-fluid padd-bottom"></div>')
 					} while($("div#image_wrap").children("div.image_area").length);
@@ -180,9 +179,8 @@ $(document).ready(function(){
 			'marginTop': '-'+(descriptionHeight / 2)+'px',
 		});
 	}
-	//画像削除
+	// Remave Image
 	$(document).on('click','.image_area i.icon-remove',function(){
-		//$(this).parents('.image_area').remove();
 		var data = new Object();
 		data.delete = 'image_delete';
 		data.path = $(this).attr('data-file-saved-path');
@@ -196,31 +194,6 @@ $(document).ready(function(){
 				var result = $.parseJSON(res);
 				console.log(result);
 				location.reload();
-/*
-				console.log(res);
-				result = $.parseJSON(res);
-				console.log(result);
-				if(result !==  1){
-					var resultString = 'success';
-					var alertMessage = '画像の削除が完了しました。';
-					$('div.image_area').unwrap();
-					do {
-						$("div#image_wrap").children("div.image_area:lt(4)").wrapAll('<div class="row-fluid padd-bottom"></div>')
-					} while($("div#image_wrap").children("div.image_area").length);
-				} else {
-					var resultString = 'error';
-					var alertMessage = '画像の削除に失敗しました。';
-				}
-				var alertEl = '';
-				alertEl += '<div class="row-fluid">';
-				alertEl += '<div class="alert alert-'+resultString+'">';
-				alertEl += '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-				alertEl += '<h4>'+resultString.capitalize()+'</h4>'+alertMessage;
-				alertEl += '</div>';
-				alertEl += '</div>';
-				$('#message-alert').html('');
-				$('#message-alert').append(alertEl);
-*/
 			}
 		});
 	});
@@ -242,11 +215,11 @@ $(document).ready(function(){
 		    format: 'yyyy/mm/dd',
 		    language: 'ja'
 		});
-		//clEditorクリック時にDatePicker非表示
+		// Hide DatePicker when clicking clEditor
 		$($(".cleditorMain iframe")[0].contentWindow.document).bind('click',function(){
 			$('div.datepicker').remove();
 		});
-		//インクリメンタルサーチ
+		// Incremental Search
 		$(document).on('keyup','#form_post_search',ajaxPostSearch);
 
 		$('#category_wrap_title').titleAcMenu();
@@ -267,7 +240,7 @@ $(document).ready(function(){
 
 		$(options.modalContent).hide();
 
-		//リサイズ処理
+		// Resize process
 		$(window).resize(function(){
 			$(options.modalContent).css({
 				top:$(window).height() /2 - currentModal.outerHeight() /2 + $(window).scrollTop(),
@@ -275,11 +248,10 @@ $(document).ready(function(){
 			});
 		});
 
-		//data属性から現在のモーダルウィンドウを取得
+		// Get current modal window from data attribute
 		$(options.openTrigger).bind('click',function(){
 			if($(options.openTrigger).length > 1){
-				//複数のモーダルウィンドウの場合
-				//data属性から現在のモーダルウィンドウを取得
+				// For multiple modal windows
 				getModal = this.getAttribute('data-modal');
 				currentModal = $('.' + getModal);
 			} else {
@@ -289,7 +261,7 @@ $(document).ready(function(){
 			$(window).resize();
 		});
 
-		//モーダルウィンドウの表示処理
+		// Display process of modal window
 		function openModal(){
 			$('body').append('<div id="overLay"></div>');
 			currentModal.fadeIn(options.fadeSpeed);
@@ -306,7 +278,7 @@ $(document).ready(function(){
 			}
 		}
 
-		//iframe関連の処理
+		// Processing related to iframe
 		//---------------------------------------------------
 		function showIframe(){
 			$('iframe').load(function(){
@@ -357,7 +329,7 @@ $(document).ready(function(){
 			});
 		}
 
-		//挿入ボタン
+		// Insert button
 		closeModal('#insertImageBtn');
 		$(document).on('click','#insertImageBtn',function(){
 			//ボタンを押下後代入
@@ -370,7 +342,7 @@ $(document).ready(function(){
 			return false;
 		});
 
-		//終了処理
+		// End processing
 		closeModal(options.closeTrigger);
 		function closeModal(closeObj){
 			$(closeObj).on('click',function(){
@@ -385,14 +357,14 @@ $(document).ready(function(){
 	PostList
 	==================================================*/
 	var initPostList = function(){
-		//インクリメンタルサーチ
+		// Incremental Search
 		$(document).on('keyup','#form_post_search',ajaxPostSearch);
-		//カテゴリー検索
+		// Category search
 		$(document).on('click','#category_search_trigger',ajaxPostCategorySearch);
-		//カテゴリー選択時のアクション
+		// Action when category is selected
 		$(document).on('click','#category_search_list li',categoryAppendAction);
 
-		 //Preview画面のみ
+		 // Preview page only
 		if($('#clEditor').size() > 0){
 			$("#clEditor").cleditor();
 			$(".cleditorToolbar .cleditorButton").each(function(){
@@ -407,7 +379,7 @@ $(document).ready(function(){
 			    format: 'yyyy/mm/dd',
 			    language: 'ja'
 			});
-			//clEditorクリック時にDatePicker非表示
+			// Hide DatePicker when clicking clEditor
 			$($(".cleditorMain iframe")[0].contentWindow.document).bind('click',function(){
 				$('div.datepicker').remove();
 			});
@@ -416,7 +388,7 @@ $(document).ready(function(){
 		$('#tag_wrap_title').titleAcMenu();
 
 	}
-	//インクリメンタルサーチ
+	// Incremental Search
 	var ajaxPostSearch = function(e){
 		var data = {};
 		data.value = $(this).val();
@@ -426,23 +398,22 @@ $(document).ready(function(){
 			type: 'POST',
 			data: data,
 			success: function(data) {
-				//console.log(data);
 				var pres = $.parseJSON(data);
-				//console.log(pres);
 				$('#table_post_list tbody').html('');
 				var result;
 				var postData = pres['post'];
 				for(var i=0; i < postData.length; i++){
 					result += '<tr>';
 					result += '<td>';
-					date = postData[i].registerdate.substring(0,postData[i].registerdate.indexOf(" ")).replace(/-/g,"/");//変換
+					// convert
+					date = postData[i].registerdate.substring(0,postData[i].registerdate.indexOf(" ")).replace(/-/g,"/");
 					result += date;
 					result += '</td>';
 					result += '<td>';
 					result += postData[i].post_title;
 					result += '</td>';
 					result += '<td>';
-					result += '<a href="'+G.baseUrl+'postlist/preview?id='+postData[i].post_id+'" class="btn btn-primary">編集</a>';
+					result += '<a href="'+G.baseUrl+'postlist/preview?id='+postData[i].post_id+'" class="btn btn-primary">Edit</a>';
 					result += '</td>';
 					result += '</tr>';
 				}
@@ -451,12 +422,12 @@ $(document).ready(function(){
 				$('#pagination_wrap').html(pres['pagination']);
 			},
 			error: function(request, status, error) {
-				alert("エラーが発生しました");
+				alert("Error");
 			}
 		});
 		return false;
 	}
-	//カテゴリー検索
+	// Category search
 	var ajaxPostCategorySearch = function(e){
 		var data = {};
 		data.action = 'ajaxPostCategorySearch';
@@ -465,7 +436,6 @@ $(document).ready(function(){
 			type: 'POST',
 			data: data,
 			success: function(data) {
-				//console.log(data);
 				var pres = $.parseJSON(data);
 				var result = '';
 				var cat_none_result = '';
@@ -486,7 +456,6 @@ $(document).ready(function(){
 							result +=  '<ul class="dropdown-menu">';
 							result += '<li>';
 							result += '<a tabindex="-2" href="#">';
-							result += 'aaaaaaaa';
 							result += '</a>';
 							result += '</li>';
 							result += '</ul>';
@@ -497,7 +466,7 @@ $(document).ready(function(){
 				$('#category_search_list').html(cat_none_result + result);
 			},
 			error: function(request, status, error) {
-				alert("エラーが発生しました");
+				alert("Error");
 			}
 		});
 	}
@@ -514,7 +483,7 @@ $(document).ready(function(){
 	var initTag = function(){
 		$(document).on('keyup','#form_tag_search',ajaxTagSearch);
 	}
-	//インクリメンタルサーチ
+	// Incremental Search
 	var ajaxTagSearch = function(e){
 		var data = {};
 		data.value = $(this).val();
@@ -524,9 +493,7 @@ $(document).ready(function(){
 			type: 'POST',
 			data: data,
 			success: function(data) {
-				//console.log(data);
 				var pres = $.parseJSON(data);
-				//console.log(pres);
 				$('#table_tag_list tbody').html('');
 				var result;
 				var tagData = pres['tag'];
@@ -542,7 +509,7 @@ $(document).ready(function(){
 					result += tagData[i].tag_slug;
 					result += '</td>';
 					result += '<td>';
-					result += '<a href="'+G.baseUrl+'tag/preview?id='+tagData[i].tag_id+'" class="btn btn-primary">編集</a>';
+					result += '<a href="'+G.baseUrl+'tag/preview?id='+tagData[i].tag_id+'" class="btn btn-primary">Edit</a>';
 					result += '</td>';
 					result += '</tr>';
 				}
@@ -551,7 +518,7 @@ $(document).ready(function(){
 				$('#pagination_wrap').html(pres['pagination']);
 			},
 			error: function(request, status, error) {
-				alert("エラーが発生しました");
+				alert("Error");
 			}
 		});
 		return false;
@@ -562,7 +529,7 @@ $(document).ready(function(){
 	var initCategory = function(){
 		$(document).on('keyup','#form_category_search',ajaxCategorySearch);
 	}
-	//インクリメンタルサーチ
+	// Incremental Search
 	var ajaxCategorySearch = function(e){
 		var data = {};
 		data.value = $(this).val();
@@ -576,12 +543,11 @@ $(document).ready(function(){
 				$('#table_category_list tbody').html('');
 				var result;
 				var categoryData = pres['category'];
-				//console.log(categoryData);
 				for(obj in categoryData){
 					if(obj == -1){
 						continue;
 					}
-					//オブジェクトであった場合
+					// When it is an object
 					if(categoryData[obj] instanceof Array == false){
 						for(i in categoryData[obj]){
 							result += '<tr>';
@@ -595,12 +561,12 @@ $(document).ready(function(){
 							result += categoryData[obj][i].category_slug;
 							result += '</td>';
 							result += '<td>';
-							result += '<a href="'+G.baseUrl+'category/preview?id='+obj+'" class="btn btn-primary">編集</a>';
+							result += '<a href="'+G.baseUrl+'category/preview?id='+obj+'" class="btn btn-primary">Edit</a>';
 							result += '</td>';
 							result += '</tr>';
 						}
 					} else {
-						//配列であった場合
+						// When it is an array
 						for(var i=0; i < categoryData[obj].length; i++){
 							result += '<tr>';
 							result += '<td>';
@@ -613,7 +579,7 @@ $(document).ready(function(){
 							result += categoryData[obj][i].category_slug;
 							result += '</td>';
 							result += '<td>';
-							result += '<a href="'+G.baseUrl+'category/preview?id='+obj+'" class="btn btn-primary">編集</a>';
+							result += '<a href="'+G.baseUrl+'category/preview?id='+obj+'" class="btn btn-primary">Edit</a>';
 							result += '</td>';
 							result += '</tr>';
 						}
@@ -625,7 +591,7 @@ $(document).ready(function(){
 				$('#pagination_wrap').html(pres['pagination']);
 			},
 			error: function(request, status, error) {
-				alert("エラーが発生しました");
+				alert("Error");
 			}
 		});
 		return false;
@@ -636,7 +602,7 @@ $(document).ready(function(){
 	var initCalendar = function(){
 	}
 	/*==================================================
-	実行処理
+	Execution processing
 	==================================================*/
 	var dataController = $('body').attr('data-controller');
 	switch(dataController){
@@ -668,7 +634,5 @@ $(document).ready(function(){
 		case 'Controller_Calendar':
 			initCalendar();
 		break;
-
 	}
-
 });

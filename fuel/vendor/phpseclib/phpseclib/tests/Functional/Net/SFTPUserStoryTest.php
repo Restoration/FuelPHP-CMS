@@ -171,8 +171,8 @@ class Functional_Net_SFTPUserStoryTest extends PhpseclibFunctionalTestCase
     }
 
     /**
-    * @depends testStatOnDir
-    */
+     * @depends testStatOnDir
+     */
     public function testPutSizeGetFileCallback($sftp)
     {
         self::$buffer = self::$exampleData;
@@ -240,6 +240,20 @@ class Functional_Net_SFTPUserStoryTest extends PhpseclibFunctionalTestCase
 
     /**
      * @depends testTruncate
+     * @group github850
+     */
+    public function testChModOnFile($sftp)
+    {
+        $this->assertNotFalse(
+            $sftp->chmod(0755, 'file1.txt'),
+            'Failed asserting that chmod() was successful.'
+        );
+
+        return $sftp;
+    }
+
+    /**
+     * @depends testChModOnFile
      */
     public function testChDirOnFile($sftp)
     {
@@ -651,5 +665,64 @@ class Functional_Net_SFTPUserStoryTest extends PhpseclibFunctionalTestCase
         $this->assertSame($stat['type'], NET_SFTP_TYPE_SYMLINK);
 
         $sftp->enableStatCache();
+
+        return $sftp;
+    }
+
+    /**
+     * @depends testStatVsLstat
+     * @group github830
+     */
+    public function testUploadOffsets($sftp)
+    {
+        $sftp->put('offset.txt', 'res.txt', SFTP::SOURCE_LOCAL_FILE, 0, 10);
+        $this->assertSame(
+            substr(self::$exampleData, 10),
+            $sftp->get('offset.txt'),
+            'Failed asserting that portions of a file could be uploaded.'
+        );
+
+        $sftp->put('offset.txt', 'res.txt', SFTP::SOURCE_LOCAL_FILE, self::$exampleDataLength - 100);
+        $this->assertSame(
+            substr(self::$exampleData, 10, -90) . self::$exampleData,
+            $sftp->get('offset.txt'),
+            'Failed asserting that you could upload into the middle of a file.'
+        );
+
+        return $sftp;
+    }
+
+    /**
+     * @depends testUploadOffsets
+     */
+    public function testReadableWritable($sftp)
+    {
+        $sftp->chmod(0000, 'offset.txt');
+        $this->assertFalse($sftp->is_writable('offset.txt'));
+        $this->assertFalse($sftp->is_writeable('offset.txt'));
+        $this->assertFalse($sftp->is_readable('offset.txt'));
+
+        $sftp->chmod(0777, 'offset.txt');
+        $this->assertTrue($sftp->is_writable('offset.txt'));
+        $this->assertTrue($sftp->is_writeable('offset.txt'));
+        $this->assertTrue($sftp->is_readable('offset.txt'));
+
+        $this->assertFalse($sftp->is_writable('nonexistantfile.ext'));
+        $this->assertFalse($sftp->is_writeable('nonexistantfile.ext'));
+        $this->assertFalse($sftp->is_readable('nonexistantfile.ext'));
+
+        return $sftp;
+    }
+
+    /**
+     * @depends testReadableWritable
+     * @group github999
+     */
+    public function testExecNlist($sftp)
+    {
+        $sftp->enablePTY();
+        $sftp->exec('ping google.com -c 5');
+        sleep(5);
+        $sftp->nlist();
     }
 }

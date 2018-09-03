@@ -34,6 +34,11 @@ class Functional_Net_SSH2Test extends PhpseclibFunctionalTestCase
             'Failed asserting that SSH2 is not connected after construction.'
         );
 
+        $this->assertFalse(
+            $ssh->isAuthenticated(),
+            'Failed asserting that SSH2 is not authenticated after construction.'
+        );
+
         $this->assertNotEmpty(
             $ssh->getServerPublicHostKey(),
             'Failed asserting that a non-empty public host key was fetched.'
@@ -55,6 +60,31 @@ class Functional_Net_SSH2Test extends PhpseclibFunctionalTestCase
     /**
      * @depends testPreLogin
      */
+    public function testBadPassword($ssh)
+    {
+        $username = $this->getEnv('SSH_USERNAME');
+        $password = $this->getEnv('SSH_PASSWORD');
+        $this->assertFalse(
+            $ssh->login($username, 'zzz' . $password),
+            'SSH2 login using password succeeded.'
+        );
+
+        $this->assertTrue(
+            $ssh->isConnected(),
+            'Failed asserting that SSH2 is connected after bad login attempt.'
+        );
+
+        $this->assertFalse(
+            $ssh->isAuthenticated(),
+            'Failed asserting that SSH2 is not authenticated after bad login attempt.'
+        );
+
+        return $ssh;
+    }
+
+    /**
+     * @depends testBadPassword
+     */
     public function testPasswordLogin($ssh)
     {
         $username = $this->getEnv('SSH_USERNAME');
@@ -62,6 +92,11 @@ class Functional_Net_SSH2Test extends PhpseclibFunctionalTestCase
         $this->assertTrue(
             $ssh->login($username, $password),
             'SSH2 login using password failed.'
+        );
+
+        $this->assertTrue(
+            $ssh->isAuthenticated(),
+            'Failed asserting that SSH2 is authenticated after good login attempt.'
         );
 
         return $ssh;
@@ -73,12 +108,16 @@ class Functional_Net_SSH2Test extends PhpseclibFunctionalTestCase
      */
     public function testExecWithMethodCallback($ssh)
     {
-        $callbackObject = $this->getMock('stdClass', array('callbackMethod'));
+        $callbackObject = $this->getMockBuilder('stdClass')
+            ->setMethods(array('callbackMethod'))
+            ->getMock();
         $callbackObject
             ->expects($this->atLeastOnce())
             ->method('callbackMethod')
             ->will($this->returnValue(true));
         $ssh->exec('pwd', array($callbackObject, 'callbackMethod'));
+
+        return $ssh;
     }
 
     public function testGetServerPublicHostKey()
@@ -99,5 +138,37 @@ class Functional_Net_SSH2Test extends PhpseclibFunctionalTestCase
             $ssh->login($username, $password),
             'SSH2 login using an open socket failed.'
         );
+    }
+
+    /**
+     * @depends testExecWithMethodCallback
+     * @group github1009
+     */
+    public function testDisablePTY($ssh)
+    {
+        $ssh->enablePTY();
+        $ssh->exec('ls -latr');
+        $ssh->disablePTY();
+        $ssh->exec('pwd');
+
+        return $ssh;
+    }
+
+    /**
+     * @depends testDisablePTY
+     * @group github1167
+     */
+    public function testChannelDataAfterOpen($ssh)
+    {
+        $ssh->write("ping 127.0.0.1\n");
+
+        $ssh->enablePTY();
+        $ssh->exec('bash');
+
+        $ssh->write("ls -latr\n");
+
+        $ssh->setTimeout(1);
+
+        $ssh->read();
     }
 }

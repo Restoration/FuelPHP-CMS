@@ -36,13 +36,10 @@ class Controller_Image extends Controller_App
 		$utility = new Utility();
 		$model_image = new Model_Image();
 		$base_path = Uri::base();
-		$path = DOCROOT.'assets/img';
-		$utility->make_date_dir($path);
-		$year = date('Y');
-		$month = date('m');
-		$save_path = 'files/'.$year.'/'.$month.'/';
+		$path = DOCROOT.'/assets/img';
+		$save_path = $utility->make_date_dir($path);
 		$config = array(
-			'path' => $save_path,
+			'path' => $path.$save_path,
 			'randomize' => true,
 			'ext_whitelist' => array('jpg', 'jpeg', 'gif', 'png'),
 			'max_size' =>  2097152,

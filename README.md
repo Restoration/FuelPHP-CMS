@@ -37,15 +37,6 @@ marked v0.3.6 Copyright 2014, Christopher Jeffrey
 Licenses: MIT  
 Source: https://github.com/chjj/marked  
 
-Underscore.js v1.8.3, Copyright 2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors  
-Licenses: MIT  
-Source: http://underscorejs.org  
-
-Backbone.js v1.3.3 Copyright 2017 Jordan Eldredge  
-Licenses: MIT  
-Source: http://backbonejs.org  
-
-
 ## Licence
 
 [MIT](https://github.com/Restoration/FuelPHP-CMS/blob/master/README.md)

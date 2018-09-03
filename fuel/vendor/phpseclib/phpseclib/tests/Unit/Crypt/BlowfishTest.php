@@ -7,6 +7,7 @@
 
 use phpseclib\Crypt\Base;
 use phpseclib\Crypt\Blowfish;
+use phpseclib\Crypt\Random;
 
 class Unit_Crypt_BlowfishTest extends PhpseclibTestCase
 {
@@ -56,18 +57,21 @@ class Unit_Crypt_BlowfishTest extends PhpseclibTestCase
             array(pack('H*', '0123456789ABCDEF'), pack('H*', '0000000000000000'), pack('H*', '245946885754369A')),
             array(pack('H*', 'FEDCBA9876543210'), pack('H*', 'FFFFFFFFFFFFFFFF'), pack('H*', '6B5C5A9C5D9E0A5A'))
         );
+
         $result = array();
-        // @codingStandardsIgnoreStart
-        foreach ($engines as $engine => $engineName) 
-        foreach ($tests as $test)
-            $result[] = array($engine, $engineName, $test[0], $test[1], $test[2]);
-        // @codingStandardsIgnoreEnd
+
+        foreach ($engines as $engine => $engineName) {
+            foreach ($tests as $test) {
+                $result[] = array($engine, $engineName, $test[0], $test[1], $test[2]);
+            }
+        }
+
         return $result;
     }
 
     /**
-    * @dataProvider engineVectors
-    */
+     * @dataProvider engineVectors
+     */
     public function testVectors($engine, $engineName, $key, $plaintext, $expected)
     {
         $bf = new Blowfish();
@@ -80,5 +84,48 @@ class Unit_Crypt_BlowfishTest extends PhpseclibTestCase
         $result = $bf->encrypt($plaintext);
         $plaintext = bin2hex($plaintext);
         $this->assertEquals($result, $expected, "Failed asserting that $plaintext yielded expected output in $engineName engine");
+    }
+
+    public function testKeySizes()
+    {
+        $objects = $engines = array();
+        $temp = new Blowfish(Base::MODE_CTR);
+        $temp->setPreferredEngine(Base::ENGINE_INTERNAL);
+        $objects[] = $temp;
+        $engines[] = 'internal';
+
+        if ($temp->isValidEngine(Base::ENGINE_MCRYPT)) {
+            $temp = new Blowfish(Base::MODE_CTR);
+            $temp->setPreferredEngine(Base::ENGINE_MCRYPT);
+            $objects[] = $temp;
+            $engines[] = 'mcrypt';
+        }
+
+        if ($temp->isValidEngine(Base::ENGINE_OPENSSL)) {
+            $temp = new Blowfish(Base::MODE_CTR);
+            $temp->setPreferredEngine(Base::ENGINE_OPENSSL);
+            $objects[] = $temp;
+            $engines[] = 'OpenSSL';
+        }
+
+        if (count($objects) < 2) {
+            self::markTestSkipped('Unable to initialize two or more engines');
+        }
+
+        for ($i = 0; $i < count($objects); $i++) {
+            $objects[$i]->setIV(str_repeat('x', $objects[$i]->getBlockLength() >> 3));
+        }
+
+        $plaintext = str_repeat('.', 100);
+
+        for ($keyLen = 4; $keyLen <= 56; $keyLen++) {
+            $key = Random::string($keyLen);
+            $objects[0]->setKey($key);
+            $ref = $objects[0]->encrypt($plaintext);
+            for ($i = 1; $i < count($objects); $i++) {
+                $objects[$i]->setKey($key);
+                $this->assertEquals($ref, $objects[$i]->encrypt($plaintext), "Failed asserting that {$engines[$i]} yields the same output as the internal engine with a key size of $keyLen");
+            }
+        }
     }
 }

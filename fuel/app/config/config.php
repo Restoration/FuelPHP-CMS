@@ -24,7 +24,7 @@ return array(
 	 * Set this to null to have it automatically detected.
 	 */
 	// 'base_url'  => null,
-	'base_url' => '/FuelCMS/',
+	'base_url' => '/FuelPHP-CMS/',
 
 	/**
 	 * url_suffix - Any suffix that needs to be added to
