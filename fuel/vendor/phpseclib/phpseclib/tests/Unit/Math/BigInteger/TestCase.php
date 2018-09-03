@@ -9,10 +9,7 @@ abstract class Unit_Math_BigInteger_TestCase extends PhpseclibTestCase
 {
     public static function setUpBeforeClass()
     {
-        include_once 'Math/BigInteger.php';
-
         parent::setUpBeforeClass();
-
         self::reRequireFile('Math/BigInteger.php');
     }
 
@@ -52,7 +49,7 @@ abstract class Unit_Math_BigInteger_TestCase extends PhpseclibTestCase
 
     public function testToHex()
     {
-         $this->assertSame('41', $this->getInstance('65')->toHex());
+        $this->assertSame('41', $this->getInstance('65')->toHex());
     }
 
     public function testToBits()
@@ -212,6 +209,18 @@ abstract class Unit_Math_BigInteger_TestCase extends PhpseclibTestCase
         $z = $this->getInstance('BC98BC98BC98BC98BC98BC98', 16);
 
         $this->assertSame($z->toHex(), $x->bitwise_XOR($y)->toHex());
+
+        // @group github1245
+
+        $a = $this->getInstance(1);
+        $b = $this->getInstance(-2);
+        $c = $a->bitwise_xor($b);
+        $this->assertSame("$c", '3');
+
+        $a = $this->getInstance('-6725760161961546982');
+        $b = $this->getInstance(51);
+        $c = $a->bitwise_xor($b);
+        $this->assertSame("$c", '6725760161961546965');
     }
 
     public function testBitwiseNOT()
@@ -220,6 +229,11 @@ abstract class Unit_Math_BigInteger_TestCase extends PhpseclibTestCase
         $z = $this->getInstance('11111111111111111111111', 16);
 
         $this->assertSame($z->toHex(), $x->bitwise_NOT()->toHex());
+
+        $a = $this->getInstance(0);
+        $a->bitwise_not();
+
+        $this->assertSame($a->toString(), '0');
     }
 
     public function testBitwiseLeftShift()
@@ -357,5 +371,36 @@ abstract class Unit_Math_BigInteger_TestCase extends PhpseclibTestCase
             $aliceShared->equals($bobShared),
             'Failed asserting that Alice and Bob share the same BigInteger.'
         );
+    }
+
+    /**
+     * @requires PHP 5.6
+     */
+    public function testDebugInfo()
+    {
+        $num = $this->getInstance(50);
+        $str = print_r($num, true);
+        $this->assertContains('[value] => 0x32', $str);
+        return $str;
+    }
+
+    /**
+     * @group github954
+     */
+    public function testSlidingWindow()
+    {
+        $e = $this->getInstance(str_repeat('1', 1794), 2);
+        $x = $this->getInstance(1);
+        $n = $this->getInstance(2);
+        $x->powMod($e, $n);
+    }
+
+    /**
+     * @group github1264
+     */
+    public function test48ToHex()
+    {
+        $temp = $this->getInstance(48);
+        $this->assertSame($temp->toHex(true), '30');
     }
 }

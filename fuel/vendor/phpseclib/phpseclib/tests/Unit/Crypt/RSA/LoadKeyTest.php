@@ -317,4 +317,107 @@ JWrQdxx/WNN+ABG426rgYYbeGcIlWLZCw6Bx/1HtN5ef6nVEoiGNChYKIRB4QFOi
 
         $this->assertSame(preg_replace('#\s#', '', $key), preg_replace('#\s#', '', $newkey));
     }
+
+    /**
+     * @group github861
+     */
+    public function testPKCS8Only()
+    {
+        $rsa = new RSA();
+
+        $key = '-----BEGIN PRIVATE KEY-----
+MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKB0yPMAbUHKqJxP
+5sjG9AOrQSAYNDc34NsnZ1tsi7fZ9lHlBaKZ6gjm2U9q+/qCKv2BuGINxWo2CMJp
+DHNY0QTt7hThr3B4U62z1CWWGnfLhFtHKH6jNYYOGc4x0jgT88uSrKFvUOLhjkjW
+bURmJMpN+OjLJuZQZ7uwoqtT3IEDAgMBAAECgYBaElS/fEzYst/Fp2DA8lYGPTs4
+vf2JxbdWrp7phlxEH3mTbUGljkr/Jj90wnSiojFpz0jm2h4oyh5Oq9OOaJwkCYcu
+2lcHJvFlhR2XEJpd1bHHcvDwZHdUjSpnO8kvwQtjuTnho2ntRzAA4wIJVSd7Tynj
+0IFEKmzhSKIvIIeN8QJBANLa10R1vs+YqpLdpAuc6Z9GYhHuh1TysBPw2xNtw3Xf
+tGPx4/53eQ0RwiHdw9Opgt8CBHErD6KzziflfxUrIXkCQQDCz4t01qYWT43kxS6k
+TcnZb/obho6akGc8C1hSxFIIGUa9hAhMpY2W6GXeGpv5TZtEJZIJE1VHTLvcLSGm
+ILNbAkEAgq9mWqULxYket3Yt1ZDEb5Zk9C49rJXaMhHHBoyyZ51mJcfngnE0Erid
+9PWJCOf4GBYdALMqtrHwpWOlV05rKQJAd6Tz50w1MRqm8MvRe4Ny5qIJH4Kibncl
+kBD/q8V7BBJSCe7fEgPTU81jUudQx+pL46yXZg+DnoiYD/9/3QHUZQJBAMBiKiZ7
+qMnD/pkHR/NFcYSYShUJS0cHyryVl7/eCclsQlZTRdnVTtKF9xPGTQC8fK0G7BDN
+Z2sKniRCcDT1ZP4=
+-----END PRIVATE KEY-----';
+
+        $result = $rsa->loadKey($key, RSA::PRIVATE_FORMAT_PKCS8);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @group github960
+     */
+    public function testSetLoad()
+    {
+        $key = 'PuTTY-User-Key-File-2: ssh-rsa
+Encryption: aes256-cbc
+Comment: phpseclib-generated-key
+Public-Lines: 4
+AAAAB3NzaC1yc2EAAAADAQABAAAAgQCqGKukO1De7zhZj6+H0qtjTkVxwTCpvKe4
+eCZ0FPqri0cb2JZfXJ/DgYSF6vUpwmJG8wVQZKjeGcjDOL5UlsuusFncCzWBQ7RK
+NUSesmQRMSGkVb1/3j+skZ6UtW+5u09lHNsj6tQ51s1SPrCBkedbNf0Tp0GbMJDy
+R4e9T04ZZw==
+Private-Lines: 8
+llx04QMegql0/nE5RvcJSrGrodxt6ytuv/JX2caeZBUyQwQc2WBNYagLHyHPM9jI
+9OUWz59FLhjFXZMDNMoUXxVmjwQpOAaVPYNxxFM9AF6/NXFji64K7huD9n4A+kLn
+sHwMLWPR5a/tZA0r05DZNz9ULA3mQu7Hz4EQ8ifu3uTPJuTmL51x6RmudYKysb20
+fM8VzC3ukvzzRh0pujUVTr/yQdmciASVFnZlt4xQy+ZEOVUAOfwjd//AFfXTvk6x
+7A45rNlU/uicHwLgoY1APvRHCFxw7F+uVW5L4mSX7NNzqBKkZ+1qpQTAfQvIfEIb
+444+CXsgIyOpqt6VxJH2u6elAtE1wau3YaFR8Alm8m97rFYzRi3oDP5NZYkTCWSV
+EOpSeghXSs7IilJu8I6/sB1w5dakdeBSFkIynrlFXkO0uUw+QJJWjxY8SypzgIuP
+DzduF6XsQrCyo6dnIpGQCQ==
+Private-MAC: 35134b7434bf828b21404099861d455e660e8740';
+
+        $rsa = new RSA();
+        $rsa->setPrivateKey($key);
+        $rsa->loadKey($key);
+
+        $rsa = new RSA();
+        $rsa->loadKey($key);
+        $rsa->setPrivateKey();
+        $rsa->loadKey($rsa);
+    }
+
+    /**
+     * @group github980
+     */
+    public function testZeroComponents()
+    {
+        $key = '-----BEGIN RSA PRIVATE KEY-----
+MIGaAgEAAkEAt5yrcHAAjhglnCEn6yecMWPeUXcMyo0+itXrLlkpcKIIyqPw546b
+GThhlb1ppX1ySX/OUA4jSakHekNP5eWPawIBAAJAW6/aVD05qbsZHMvZuS2Aa5Fp
+NNj0BDlf38hOtkhDzz/hkYb+EBYLLvldhgsD0OvRNy8yhz7EjaUqLCB0juIN4QIB
+AAIBAAIBAAIBAAIBAA==
+-----END RSA PRIVATE KEY-----';
+
+        $rsa = new RSA();
+        $rsa->loadKey($key);
+        $rsa->setSignatureMode(RSA::SIGNATURE_PKCS1);
+        $rsa->setHash('md5');
+        $rsa->setMGFHash('md5');
+
+        $rsa->sign('zzzz');
+    }
+
+    public function testGoodBad()
+    {
+        $rsa = new RSA();
+
+        $key = '-----BEGIN RSA PUBLIC KEY-----
+MIIBCgKCAQEA61BjmfXGEvWmegnBGSuS+rU9soUg2FnODva32D1AqhwdziwHINFa
+D1MVlcrYG6XRKfkcxnaXGfFDWHLEvNBSEVCgJjtHAGZIm5GL/KA86KDp/CwDFMSw
+luowcXwDwoyinmeOY9eKyh6aY72xJh7noLBBq1N0bWi1e2i+83txOCg4yV2oVXhB
+o8pYEJ8LT3el6Smxol3C1oFMVdwPgc0vTl25XucMcG/ALE/KNY6pqC2AQ6R2ERlV
+gPiUWOPatVkt7+Bs3h5Ramxh7XjBOXeulmCpGSynXNcpZ/06+vofGi/2MlpQZNhH
+Ao8eayMp6FcvNucIpUndo1X8dKMv3Y26ZQIDAQAB
+-----END RSA PUBLIC KEY-----';
+
+        $this->assertTrue($rsa->loadKey($key));
+        $this->assertInternalType('string', $rsa->getPublicKey());
+        $this->assertFalse($rsa->loadKey('zzz'));
+        $this->assertFalse($rsa->getPublicKey());
+    }
 }

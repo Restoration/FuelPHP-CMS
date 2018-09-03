@@ -30,12 +30,15 @@ class Unit_Crypt_RC2Test extends PhpseclibTestCase
             array('88bca90e90875a7f0f79c384627bafb2', 128, '0000000000000000', '2269552ab0f85ca6'),
             array('88bca90e90875a7f0f79c384627bafb216f80a6f85920584c42fceb0be255daf1e', 129, '0000000000000000', '5b78d3a43dfff1f1')
         );
+
         $result = array();
-        // @codingStandardsIgnoreStart
-        foreach ($this->engines as $engine => $engineName) 
-        foreach ($tests as $test)
-            $result[] = array($engine, $engineName, $test[0], $test[1], $test[2], $test[3]);
-        // @codingStandardsIgnoreEnd
+
+        foreach ($this->engines as $engine => $engineName) {
+            foreach ($tests as $test) {
+                $result[] = array($engine, $engineName, $test[0], $test[1], $test[2], $test[3]);
+            }
+        }
+
         return $result;
     }
 
@@ -68,7 +71,7 @@ class Unit_Crypt_RC2Test extends PhpseclibTestCase
 
         // now, to OpenSSL's credit, null padding is internally consistent with OpenSSL. OpenSSL only supports fixed length keys. For rc2, rc4 and
         // bf (blowfish), all keys are 128 bits (or are null padded / truncated accordingly). to use 40-bit or 64-bit keys with RC4 with OpenSSL you
-        // don't use the rc4 algorithm - you use the rc4-40 or rc4-64 algorithm. and similarily, it's not aes-cbc that you use - it's either aes-128-cbc
+        // don't use the rc4 algorithm - you use the rc4-40 or rc4-64 algorithm. and similarly, it's not aes-cbc that you use - it's either aes-128-cbc
         // or aes-192-cbc or aes-256-cbc. this is in contrast to mcrypt, which (with the exception of RC2) actually supports variable and arbitrary
         // length keys.
 
@@ -103,8 +106,8 @@ class Unit_Crypt_RC2Test extends PhpseclibTestCase
     }
 
     /**
-    * @dataProvider engineVectors
-    */
+     * @dataProvider engineVectors
+     */
     public function testVectors($engine, $engineName, $key, $keyLen, $plaintext, $ciphertext)
     {
         $rc2 = new RC2();
@@ -118,5 +121,8 @@ class Unit_Crypt_RC2Test extends PhpseclibTestCase
 
         $result = bin2hex($rc2->encrypt(pack('H*', $plaintext)));
         $this->assertEquals($result, $ciphertext, "Failed asserting that $plaintext yielded expected output in $engineName engine");
+
+        $result = bin2hex($rc2->decrypt(pack('H*', $ciphertext)));
+        $this->assertEquals($result, $plaintext, "Failed asserting that decrypted result yielded $plaintext as a result in $engineName engine");
     }
 }
