@@ -37,11 +37,12 @@ class Model_Image extends Model_Crud{
     public static function add_action($file_data,$save_path)
     {
 		$table_name = 'trn_file';
+		$url =  (empty($_SERVER["HTTPS"]) ? "http://" : "https://") . $_SERVER["HTTP_HOST"].Uri::base(false);
 		for($i=0;$i<count($file_data);$i++){
 			$data[$i]['file_name'] = $file_data[$i]['name'];
 			$data[$i]['file_saved_as'] = $file_data[$i]['saved_as'];
 			$data[$i]['file_saved_to'] = $file_data[$i]['saved_to'];
-			$data[$i]['file_saved_abs_to'] = '../public/assets/img'.$save_path;
+			$data[$i]['file_saved_abs_to'] = $url.'public/assets/img'.$save_path;
 			$data[$i]['file_extension'] = $file_data[$i]['extension'];
 			$data[$i]['file_path'] = $file_data[$i]['file'];
 			$data[$i]['registerdate'] = date("Y-m-d H:i:s");
