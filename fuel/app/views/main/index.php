@@ -14,12 +14,6 @@
 				<?php echo \Form::textarea('add[post_message]',$post['post_message'], array('id'=>'clEditor','class' => 'form-control'));?>
 			</span>
 			<span class="span3">
-				<h5 id="publish_wrap_title">Publish<i class="icon-chevron-up"></i></h5>
-				<div id="publish_wrap">
-
-				</div>
-			</span>
-			<span class="span3">
 				<h5 id="category_wrap_title">Category List<i class="icon-chevron-up"></i></h5>
 				<div id="category_wrap">
 					<ul>
